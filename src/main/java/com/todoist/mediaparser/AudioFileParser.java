@@ -5,7 +5,7 @@ import com.todoist.mediaparser.util.StringUtils;
 class AudioFileParser extends MediaParser {
     // FIXME: .aac is only supported in Android 3.0+.
     // FIXME: .flac is only supported in Android 3.1+.
-    private static final String[] EXTENSIONS = {".m4a", ".aac", ".flac", ".mp3", ".mid", ".wav"};
+    private static final String[] EXTENSIONS = {".m4a", ".aac", ".amr", ".flac", ".mp3", ".mid", ".wav"};
 
     AudioFileParser(String url) {
         super(url);

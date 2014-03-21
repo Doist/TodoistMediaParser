@@ -5,6 +5,7 @@
 *.iws
 classes
 out
+build
 
 # Maven
 target

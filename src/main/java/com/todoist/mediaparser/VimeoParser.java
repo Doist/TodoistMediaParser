@@ -52,7 +52,7 @@ class VimeoParser extends AbsMediaParserWithId {
 
     @Override
     public MediaType createContentMediaType() {
-        return MediaType.EXTERNAL;
+        return MediaType.VIDEO;
     }
 
     @Override

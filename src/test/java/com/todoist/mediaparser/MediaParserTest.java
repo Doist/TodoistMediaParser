@@ -42,13 +42,13 @@ public class MediaParserTest {
         MediaParser mediaParser;
 
         mediaParser = MediaParser.getInstance("http://twitter.yfrog.com/ocre1nbdj");
-        checkThumbnailAndUrlContentType(mediaParser, YfrogParser.class, 75, MediaType.EXTERNAL, "text/html", "text/html");
+        checkThumbnailAndUrlContentType(mediaParser, YfrogParser.class, 75, MediaType.OTHER, "text/html", "text/html");
 
         mediaParser = MediaParser.getInstance("http://yfrog.com/nvvdfdej");
-        checkThumbnailAndUrlContentType(mediaParser, YfrogParser.class, 150, MediaType.EXTERNAL, "text/html", "text/html");
+        checkThumbnailAndUrlContentType(mediaParser, YfrogParser.class, 150, MediaType.OTHER, "text/html", "text/html");
 
         mediaParser = MediaParser.getInstance("http://www.yfrog.com/0ia9mcz");
-        checkThumbnailAndUrlContentType(mediaParser, YfrogParser.class, 90, MediaType.EXTERNAL, "text/html", "text/html");
+        checkThumbnailAndUrlContentType(mediaParser, YfrogParser.class, 90, MediaType.OTHER, "text/html", "text/html");
     }
 
     @Test
@@ -70,10 +70,10 @@ public class MediaParserTest {
         MediaParser mediaParser;
 
         mediaParser = MediaParser.getInstance("https://www.youtube.com/watch?v=9bZkp7q19f0");
-        checkThumbnailAndUrlContentType(mediaParser, YoutubeParser.class, 666, MediaType.EXTERNAL, "text/html", "text/html");
+        checkThumbnailAndUrlContentType(mediaParser, YoutubeParser.class, 666, MediaType.VIDEO, "text/html", "text/html");
 
         mediaParser = MediaParser.getInstance("http://youtu.be/wcLNteez3c4");
-        checkThumbnailAndUrlContentType(mediaParser, YoutubeParser.class, 666, MediaType.EXTERNAL, "text/html", "text/html");
+        checkThumbnailAndUrlContentType(mediaParser, YoutubeParser.class, 666, MediaType.VIDEO, "text/html", "text/html");
     }
 
     @Test
@@ -81,10 +81,10 @@ public class MediaParserTest {
         MediaParser mediaParser;
 
         mediaParser = MediaParser.getInstance("http://vimeo.com/album/2642665/video/74622970");
-        checkThumbnailAndUrlContentType(mediaParser, VimeoParser.class, 666, MediaType.EXTERNAL, "text/html", "text/html");
+        checkThumbnailAndUrlContentType(mediaParser, VimeoParser.class, 666, MediaType.VIDEO, "text/html", "text/html");
 
         mediaParser = MediaParser.getInstance("http://vimeo.com/67410022");
-        checkThumbnailAndUrlContentType(mediaParser, VimeoParser.class, 666, MediaType.EXTERNAL, "text/html", "text/html");
+        checkThumbnailAndUrlContentType(mediaParser, VimeoParser.class, 666, MediaType.VIDEO, "text/html", "text/html");
     }
 
     @Test

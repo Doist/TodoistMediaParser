@@ -4,22 +4,22 @@ import com.todoist.mediaparser.MediaParser;
 
 public enum MediaType {
     /**
-     * An image file link is returned by {@link MediaParser#createContentUrl()}.
+     * {@link MediaParser#getContentUrl()} is an image.
      */
     IMAGE,
 
     /**
-     * A video file link is returned by {@link MediaParser#createContentUrl()}..
+     * {@link MediaParser#getContentUrl()} is a video.
      */
     VIDEO,
 
     /**
-     * An audio file link is returned by {@link MediaParser#createContentUrl()}.
+     * {@link MediaParser#getContentUrl()} is audio.
      */
     AUDIO,
 
     /**
-     * An external link is returned by {@link MediaParser#createContentUrl()}.
+     * {@link MediaParser#getContentUrl()} is some other type of media, or it's undetermined.
      */
-    EXTERNAL
+    OTHER
 }

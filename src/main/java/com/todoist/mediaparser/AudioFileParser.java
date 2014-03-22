@@ -1,5 +1,6 @@
 package com.todoist.mediaparser;
 
+import com.todoist.mediaparser.util.MediaType;
 import com.todoist.mediaparser.util.StringUtils;
 
 class AudioFileParser extends MediaParser {
@@ -20,17 +21,17 @@ class AudioFileParser extends MediaParser {
     }
 
     @Override
-    public String getThumbnailUrl(int smallestSide) {
+    public String createThumbnailUrl(int smallestSide) {
         return null;
     }
 
     @Override
-    public String getUrl() {
+    public String createContentUrl() {
         return mUrl;
     }
 
     @Override
-    public Type getType() {
-        return Type.AUDIO;
+    public MediaType createContentMediaType() {
+        return MediaType.AUDIO;
     }
 }

@@ -1,6 +1,7 @@
 package com.todoist.mediaparser;
 
 import com.todoist.mediaparser.util.HttpUtils;
+import com.todoist.mediaparser.util.MediaType;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -25,7 +26,7 @@ class YoutubeParser extends AbsMediaParserWithId {
     }
 
     @Override
-    public String getThumbnailUrl(int smallestSide) {
+    public String createThumbnailUrl(int smallestSide) {
         try {
             URL url = new URL(String.format(TEMPLATE, mUrl));
             String response = HttpUtils.readFrom((HttpURLConnection)url.openConnection());
@@ -44,13 +45,13 @@ class YoutubeParser extends AbsMediaParserWithId {
     }
 
     @Override
-    public String getUrl() {
+    public String createContentUrl() {
         return mUrl;
     }
 
     @Override
-    public Type getType() {
-        return Type.EXTERNAL;
+    public MediaType createContentMediaType() {
+        return MediaType.EXTERNAL;
     }
 
     @Override

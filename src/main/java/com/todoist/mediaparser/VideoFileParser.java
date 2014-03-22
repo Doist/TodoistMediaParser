@@ -1,5 +1,7 @@
 package com.todoist.mediaparser;
 
+import com.todoist.mediaparser.util.MediaType;
+
 class VideoFileParser extends MediaParser {
     // FIXME: .mp4 H.264 is only supported on Android 3.0+. H.263 is fine.
     // FIXME: .mkv is only supported on Android 4.0+.
@@ -18,18 +20,18 @@ class VideoFileParser extends MediaParser {
     }
 
     @Override
-    public String getThumbnailUrl(int smallestSide) {
-        return getUrl();
+    public String createThumbnailUrl(int smallestSide) {
+        return createContentUrl();
     }
 
     @Override
-    public String getUrl() {
+    public String createContentUrl() {
         return mUrl;
     }
 
     @Override
-    public Type getType() {
-        return Type.VIDEO;
+    public MediaType createContentMediaType() {
+        return MediaType.VIDEO;
     }
 
     private boolean endsWithIgnoreCase(String str, String suffix) {

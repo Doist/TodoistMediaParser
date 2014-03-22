@@ -1,5 +1,6 @@
 package com.todoist.mediaparser;
 
+import com.todoist.mediaparser.util.MediaType;
 import com.todoist.mediaparser.util.Size;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ class YfrogParser extends AbsMediaParserWithId {
     }
 
     @Override
-    public String getThumbnailUrl(int smallestSide) {
+    public String createThumbnailUrl(int smallestSide) {
         Size size = null;
 
         for(Size availableSize : AVAILABLE_SIZES) {
@@ -43,13 +44,13 @@ class YfrogParser extends AbsMediaParserWithId {
     }
 
     @Override
-    public String getUrl() {
+    public String createContentUrl() {
         return mUrl;
     }
 
     @Override
-    public Type getType() {
-        return Type.EXTERNAL;
+    public MediaType createContentMediaType() {
+        return MediaType.EXTERNAL;
     }
 
     @Override

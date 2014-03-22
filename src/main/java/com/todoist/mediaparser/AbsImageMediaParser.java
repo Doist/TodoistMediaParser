@@ -1,5 +1,6 @@
 package com.todoist.mediaparser;
 
+import com.todoist.mediaparser.util.MediaType;
 import com.todoist.mediaparser.util.Size;
 
 abstract class AbsImageMediaParser extends AbsMediaParserWithId {
@@ -8,7 +9,7 @@ abstract class AbsImageMediaParser extends AbsMediaParserWithId {
     }
 
     @Override
-    public String getThumbnailUrl(int smallestSide) {
+    public String createThumbnailUrl(int smallestSide) {
         Size size = null;
 
         Size[] availableSizes = getAvailableSizes();
@@ -25,14 +26,14 @@ abstract class AbsImageMediaParser extends AbsMediaParserWithId {
     }
 
     @Override
-    public String getUrl() {
+    public String createContentUrl() {
         Size[] availableSizes = getAvailableSizes();
         return String.format(getUrlTemplate(), mId, availableSizes[availableSizes.length - 1].key);
     }
 
     @Override
-    public Type getType() {
-        return Type.IMAGE;
+    public MediaType createContentMediaType() {
+        return MediaType.IMAGE;
     }
 
     /**

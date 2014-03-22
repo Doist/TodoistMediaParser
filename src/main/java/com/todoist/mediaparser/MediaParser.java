@@ -137,19 +137,17 @@ public abstract class MediaParser {
 	 * Returns a thumbnail url, or null if one isn't found.
 	 * @see #getThumbnailUrl(int).
 	 */
-    public abstract String createThumbnailUrl(int smallestSide);
+    protected abstract String createThumbnailUrl(int smallestSide);
 
 	/**
 	 * Returns the url for the content.
 	 * @see #getContentUrl().
 	 */
-    public abstract String createContentUrl();
+	protected abstract String createContentUrl();
 
 	/**
 	 * Returns the type of the content.
 	 * @see #getContentMediaType().
 	 */
-    public abstract MediaType createContentMediaType();
-
-
+	protected abstract MediaType createContentMediaType();
 }

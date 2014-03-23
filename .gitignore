@@ -5,12 +5,15 @@
 *.iws
 classes
 out
-build
 
 # Maven
 target
 release.properties
 pom.xml.*
+
+# Gradle
+.gradle
+build
 
 # Other
 .DS_Store

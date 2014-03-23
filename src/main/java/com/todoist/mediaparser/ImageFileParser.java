@@ -3,7 +3,6 @@ package com.todoist.mediaparser;
 import com.todoist.mediaparser.util.MediaType;
 
 class ImageFileParser extends MediaParser {
-    // FIXME: .webp is only supported in Android 4.0+.
     private static final String[] EXTENSIONS = {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp"};
 
     ImageFileParser(String url) {

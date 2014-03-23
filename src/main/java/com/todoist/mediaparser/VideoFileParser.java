@@ -3,8 +3,6 @@ package com.todoist.mediaparser;
 import com.todoist.mediaparser.util.MediaType;
 
 class VideoFileParser extends MediaParser {
-    // FIXME: .mp4 H.264 is only supported on Android 3.0+. H.263 is fine.
-    // FIXME: .mkv is only supported on Android 4.0+.
     private static final String[] EXTENSIONS = {".3gp", ".mp4", ".webm", ".mkv"};
 
     VideoFileParser(String url) {

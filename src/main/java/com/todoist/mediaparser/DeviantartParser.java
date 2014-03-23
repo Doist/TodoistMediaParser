@@ -31,6 +31,24 @@ public class DeviantartParser extends AbsOEmbedParser {
 	}
 
 	@Override
+	protected boolean isContentUrlInOEmbedResponse() {
+		return true;
+	}
+
+	@Override
+	protected String getContentUrl(JsonParser jsonParser) throws IOException {
+		if(jsonParser.nextToken() == JsonToken.START_OBJECT) {
+			while(jsonParser.nextToken() != JsonToken.END_OBJECT) {
+				String name = jsonParser.getCurrentName();
+				jsonParser.nextToken(); // Move to the value.
+				if("url".equals(name))
+					return jsonParser.getText();
+			}
+		}
+		throw new IOException("url field not found in oEmbed");
+	}
+
+	@Override
 	protected String getThumbnailUrl(JsonParser jsonParser) throws IOException {
 		if(jsonParser.nextToken() == JsonToken.START_OBJECT) {
 			while(jsonParser.nextToken() != JsonToken.END_OBJECT) {
@@ -45,7 +63,6 @@ public class DeviantartParser extends AbsOEmbedParser {
 
 	private Pattern getPattern() {
 		if(sPattern == null) {
-			System.out.println("Getting pattern!");
 			sPattern = Pattern.compile(
 					"https?://(?:www\\.)?" +
 							"(?:(?:[\\w-]+\\.deviantart\\.com/(?:(?:art/)|(?:[^/]+#/d)))|(?:fav\\.me/)|(?:sta\\.sh/))" +

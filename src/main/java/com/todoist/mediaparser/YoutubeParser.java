@@ -30,6 +30,16 @@ public class YoutubeParser extends AbsOEmbedParser {
 	}
 
 	@Override
+	protected boolean isContentUrlInOEmbedResponse() {
+		return false;
+	}
+
+	@Override
+	protected String getContentUrl(JsonParser jsonParser) throws IOException {
+		return null;
+	}
+
+	@Override
 	protected String getThumbnailUrl(JsonParser jsonParser) throws IOException {
 		if(jsonParser.nextToken() == JsonToken.START_OBJECT) {
 			while(jsonParser.nextToken() != JsonToken.END_OBJECT) {

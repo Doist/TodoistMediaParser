@@ -1,4 +1,4 @@
-package com.todoist.mediaparser;
+package com.todoist.mediaparser.mediaparser;
 
 import com.todoist.mediaparser.util.MediaType;
 import com.todoist.mediaparser.util.Size;
@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 /*
  * See: http://yfrog.com/page/api#a5
  */
-class YfrogParser extends AbsMediaParserWithId {
+public class YfrogParser extends BaseMediaParserWithId {
     private static final List<Size> AVAILABLE_SIZES = new ArrayList<Size>() {{
         add(new Size("small", 100));
         add(new Size("iphone", 480));
@@ -22,13 +22,18 @@ class YfrogParser extends AbsMediaParserWithId {
         super(url);
     }
 
-    @Override
-    protected boolean matches() {
-        return mUrl.contains("yfrog.com/") && super.matches();
-    }
+	@Override
+	public boolean isThumbnailImmediate(int smallestSide) {
+		return true; // Always immediate.
+	}
+
+	@Override
+	public MediaType getContentMediaType() {
+		return MediaType.OTHER; // Can be IMAGE or VIDEO.
+	}
 
     @Override
-    public String createThumbnailUrl(int smallestSide) {
+    protected String createThumbnailUrl(int smallestSide) {
         Size size = null;
 
         for(Size availableSize : AVAILABLE_SIZES) {
@@ -43,19 +48,9 @@ class YfrogParser extends AbsMediaParserWithId {
         return String.format("http://yfrog.com/%1$s:%2$s", mId, size.key);
     }
 
-	@Override
-	public boolean isThumbnailImmediate(int smallestSide) {
-		return true; // It's always immediate.
-	}
-
     @Override
-    public String createContentUrl() {
+    protected String createContentUrl() {
         return mUrl;
-    }
-
-    @Override
-    public MediaType getContentMediaType() {
-        return MediaType.OTHER; // Can be IMAGE or VIDEO.
     }
 
     @Override

@@ -1,12 +1,22 @@
-package com.todoist.mediaparser;
+package com.todoist.mediaparser.mediaparser;
 
 import com.todoist.mediaparser.util.MediaType;
 import com.todoist.mediaparser.util.Size;
 
-abstract class AbsImageMediaParser extends AbsMediaParserWithId {
-    AbsImageMediaParser(String url) {
+abstract class BaseImageMediaParser extends BaseMediaParserWithId {
+    BaseImageMediaParser(String url) {
         super(url);
     }
+
+	@Override
+	public boolean isThumbnailImmediate(int smallestSide) {
+		return true; // Always immediate.
+	}
+
+	@Override
+	public MediaType getContentMediaType() {
+		return MediaType.IMAGE;
+	}
 
     @Override
     public String createThumbnailUrl(int smallestSide) {
@@ -26,19 +36,9 @@ abstract class AbsImageMediaParser extends AbsMediaParserWithId {
     }
 
 	@Override
-	public boolean isThumbnailImmediate(int smallestSide) {
-		return true; // It's always immediate.
-	}
-
-	@Override
-    public String createContentUrl() {
+    protected String createContentUrl() {
         Size[] availableSizes = getAvailableSizes();
         return String.format(getUrlTemplate(), mId, availableSizes[availableSizes.length - 1].key);
-    }
-
-    @Override
-    public MediaType getContentMediaType() {
-        return MediaType.IMAGE;
     }
 
     /**

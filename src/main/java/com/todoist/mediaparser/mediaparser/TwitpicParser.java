@@ -1,4 +1,4 @@
-package com.todoist.mediaparser;
+package com.todoist.mediaparser.mediaparser;
 
 import com.todoist.mediaparser.util.Size;
 
@@ -7,17 +7,11 @@ import java.util.regex.Pattern;
 /*
  * See: http://dev.twitpic.com/docs/thumbnails/ and http://dev.twitpic.com/docs/2/faces_create/ (inside "Description")
  */
-class TwitpicParser extends AbsImageMediaParser {
+public class TwitpicParser extends BaseImageMediaParser {
     private static Pattern sIdPattern;
 
     TwitpicParser(String url) {
         super(url);
-    }
-
-    @Override
-    protected boolean matches() {
-        // Use contains() before super.matches() to avoid creating expensive patterns when it's bound to fail.
-        return mUrl.contains("twitpic.com/") && super.matches();
     }
 
     @Override

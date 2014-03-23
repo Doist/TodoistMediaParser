@@ -1,4 +1,4 @@
-package com.todoist.mediaparser;
+package com.todoist.mediaparser.mediaparser;
 
 import com.todoist.mediaparser.util.Size;
 
@@ -7,17 +7,11 @@ import java.util.regex.Pattern;
 /*
  * See: http://instagram.com/developer/embedding
  */
-class InstagramParser extends AbsImageMediaParser {
+public class InstagramParser extends BaseImageMediaParser {
     private static Pattern sIdPattern;
 
     InstagramParser(String url) {
         super(url);
-    }
-
-    @Override
-    protected boolean matches() {
-        // Use contains() before super.matches() to avoid creating expensive patterns when it's bound to fail.
-        return (mUrl.contains("instagr.am/") || mUrl.contains("instagram.com/")) && super.matches();
     }
 
     @Override

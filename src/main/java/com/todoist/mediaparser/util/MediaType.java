@@ -20,6 +20,7 @@ public enum MediaType {
 
     /**
      * {@link MediaParser#getContentUrl()} is some other type of media, or it's undetermined.
+     * For a more accurate reading, check its mime type.
      */
     OTHER
 }

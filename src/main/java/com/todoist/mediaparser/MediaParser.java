@@ -1,8 +1,21 @@
 package com.todoist.mediaparser;
 
+import com.todoist.mediaparser.mediaparser.AudioFileParser;
+import com.todoist.mediaparser.mediaparser.DeviantartParser;
+import com.todoist.mediaparser.mediaparser.FlickrParser;
+import com.todoist.mediaparser.mediaparser.ImageFileParser;
+import com.todoist.mediaparser.mediaparser.ImglyParser;
+import com.todoist.mediaparser.mediaparser.InstagramParser;
+import com.todoist.mediaparser.mediaparser.TwitpicParser;
+import com.todoist.mediaparser.mediaparser.VideoFileParser;
+import com.todoist.mediaparser.mediaparser.VimeoParser;
+import com.todoist.mediaparser.mediaparser.YfrogParser;
+import com.todoist.mediaparser.mediaparser.YoutubeParser;
 import com.todoist.mediaparser.util.MediaType;
 
+import java.lang.reflect.Constructor;
 import java.util.LinkedHashSet;
+import java.util.regex.Pattern;
 
 public abstract class MediaParser {
     private static final LinkedHashSet<Class<? extends MediaParser>> sMediaParsers =
@@ -10,9 +23,9 @@ public abstract class MediaParser {
                 add(ImglyParser.class);
                 add(InstagramParser.class);
                 add(TwitpicParser.class);
-	            add(FlickrParser.class);
+                add(FlickrParser.class);
                 add(YfrogParser.class);
-	            add(DeviantartParser.class);
+                add(DeviantartParser.class);
                 add(ImageFileParser.class);
                 add(YoutubeParser.class);
                 add(VimeoParser.class);
@@ -31,9 +44,12 @@ public abstract class MediaParser {
     public static MediaParser getInstance(String url) {
         for(Class<? extends MediaParser> mediaParserClass : sMediaParsers) {
             try {
-                MediaParser mediaParser = mediaParserClass.getDeclaredConstructor(String.class).newInstance(url);
-                if(mediaParser.matches())
-                    return mediaParser;
+	            Constructor<? extends MediaParser> mediaParserConstructor =
+			            mediaParserClass.getDeclaredConstructor(String.class);
+	            mediaParserConstructor.setAccessible(true);
+	            MediaParser mediaParser = mediaParserConstructor.newInstance(url);
+	            if(mediaParser.matches())
+		            return mediaParser;
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -60,7 +76,7 @@ public abstract class MediaParser {
 		return sMediaParsers.remove(mediaParserClass);
 	}
 
-    MediaParser(String url) {
+    protected MediaParser(String url) {
         mUrl = url;
     }
 
@@ -103,9 +119,21 @@ public abstract class MediaParser {
 	}
 
 	/**
+	 * Returns the media type of the content.
+	 */
+	public abstract MediaType getContentMediaType();
+
+	/**
 	 * Returns true if this parser is appropriate for {@code mUrl}, or false if not.
 	 */
-	protected abstract boolean matches();
+	protected boolean matches() {
+		return getMatchingPattern().matcher(mUrl).lookingAt();
+	}
+
+	/**
+	 * Returns a pattern that matches valid urls. Used by {@link #matches()}.
+	 */
+	protected abstract Pattern getMatchingPattern();
 
 	/**
 	 * Returns a thumbnail url, or null if one isn't found.
@@ -118,9 +146,4 @@ public abstract class MediaParser {
 	 * @see #getContentUrl().
 	 */
 	protected abstract String createContentUrl();
-
-	/**
-	 * Returns the media type of the content.
-	 */
-	protected abstract MediaType getContentMediaType();
 }

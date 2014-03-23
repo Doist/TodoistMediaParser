@@ -1,5 +1,6 @@
-package com.todoist.mediaparser;
+package com.todoist.mediaparser.mediaparser;
 
+import com.todoist.mediaparser.MediaParser;
 import com.todoist.mediaparser.util.MediaType;
 
 import org.junit.Test;
@@ -7,6 +8,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.regex.Pattern;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -70,13 +72,13 @@ public class MediaParserTest {
 		MediaParser mediaParser;
 
 		mediaParser = MediaParser.getInstance("http://www.deviantart.com/art/Growing-Bird-441918288");
-		checkThumbnailAndUrlContentType(mediaParser, DeviantartParser.class, 666, MediaType.OTHER, "text/html");
+		checkThumbnailAndUrlContentType(mediaParser, DeviantartParser.class, 666, MediaType.OTHER, "image/");
 
 		mediaParser = MediaParser.getInstance("http://fav.me/d4klbrc");
-		checkThumbnailAndUrlContentType(mediaParser, DeviantartParser.class, 666, MediaType.OTHER, "text/html");
+		checkThumbnailAndUrlContentType(mediaParser, DeviantartParser.class, 666, MediaType.OTHER, "image/");
 
 		mediaParser = MediaParser.getInstance("http://sta.sh/0xhhdd19ax3");
-		checkThumbnailAndUrlContentType(mediaParser, DeviantartParser.class, 666, MediaType.OTHER, "text/html");
+		checkThumbnailAndUrlContentType(mediaParser, DeviantartParser.class, 666, MediaType.OTHER, "image/");
 	}
 
     @Test
@@ -135,6 +137,8 @@ public class MediaParserTest {
 		MediaParser mediaParser = MediaParser.getInstance("http://myservice.com");
 
 		assertThat(mediaParser, is(instanceOf(MyServiceMediaParser.class)));
+
+		MediaParser.unregisterMediaParser(MyServiceMediaParser.class); // Cleanup.
 	}
 
 	@Test
@@ -144,6 +148,8 @@ public class MediaParserTest {
 		MediaParser mediaParser = MediaParser.getInstance("http://www.youtube.com/watch?v=9bZkp7q19f0");
 
 		assertThat(mediaParser, is(nullValue()));
+
+		MediaParser.registerMediaParser(YoutubeParser.class); // Cleanup.
 	}
 
     private void checkThumbnailAndUrlContentType(MediaParser mediaParser, Class<? extends MediaParser> expectedClass,
@@ -156,7 +162,7 @@ public class MediaParserTest {
 	    // Thumbnails are images.
         assertThat(thumbnailConnection.getHeaderField("Content-Type"), containsString("image/"));
 
-        URL contentUrl = new URL(mediaParser.getContentUrl());
+	    URL contentUrl = new URL(mediaParser.getContentUrl());
         URLConnection imageConnection = contentUrl.openConnection();
         assertThat(imageConnection.getHeaderField("Content-Type"), containsString(expectedContentType));
 	    assertThat(mediaParser.getContentMediaType(), is(expectedContentMediaType));
@@ -168,8 +174,13 @@ public class MediaParserTest {
 		}
 
 		@Override
-		protected boolean matches() {
-			return mUrl.contains("myservice.com");
+		public MediaType getContentMediaType() {
+			return null;
+		}
+
+		@Override
+		protected Pattern getMatchingPattern() {
+			return Pattern.compile("https?://myservice\\.com");
 		}
 
 		@Override
@@ -179,11 +190,6 @@ public class MediaParserTest {
 
 		@Override
 		protected String createContentUrl() {
-			return null;
-		}
-
-		@Override
-		protected MediaType getContentMediaType() {
 			return null;
 		}
 	}

@@ -1,4 +1,4 @@
-package com.todoist.mediaparser;
+package com.todoist.mediaparser.mediaparser;
 
 import com.todoist.mediaparser.util.Size;
 
@@ -7,18 +7,19 @@ import java.util.regex.Pattern;
 /*
  * See: http://img.ly/api
  */
-class ImglyParser extends AbsImageMediaParser {
+public class ImglyParser extends BaseImageMediaParser {
+	private static Pattern sIdPattern;
+
     ImglyParser(String url) {
         super(url);
     }
 
-    @Override
-    protected boolean matches() {
-        // Use contains() before super.matches() to avoid creating expensive patterns when it's bound to fail.
-        return mUrl.contains("img.ly/") && super.matches();
-    }
+	@Override
+	protected Pattern getMatchingPattern() {
+		return null;
+	}
 
-    @Override
+	@Override
     protected Size[] getAvailableSizes() {
         return new Size[] {
                 new Size("mini", 75),
@@ -34,7 +35,6 @@ class ImglyParser extends AbsImageMediaParser {
         return "http://img.ly/show/%2$s/%1$s";
     }
 
-    private static Pattern sIdPattern;
     @Override
     protected Pattern getIdPattern() {
         if(sIdPattern == null)

@@ -1,12 +1,14 @@
-package com.todoist.mediaparser;
+package com.todoist.mediaparser.mediaparser;
+
+import com.todoist.mediaparser.MediaParser;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-abstract class AbsMediaParserWithId extends MediaParser {
+abstract class BaseMediaParserWithId extends MediaParser {
     protected String mId;
 
-    AbsMediaParserWithId(String url) {
+    BaseMediaParserWithId(String url) {
         super(url);
     }
 
@@ -20,11 +22,15 @@ abstract class AbsMediaParserWithId extends MediaParser {
             mId = matcher.group(1);
 	        return true;
         }
-
         return false;
     }
 
-    /**
+	@Override
+	protected Pattern getMatchingPattern() {
+		return null; // matches() is overridden.
+	}
+
+	/**
      * Returns a {@link Pattern} that captures the id from {@link #mUrl} in the first group. If possible, this should
      * be cached in a static variable.
      */

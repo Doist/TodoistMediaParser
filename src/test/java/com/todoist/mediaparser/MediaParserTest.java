@@ -11,6 +11,7 @@ import java.net.URLConnection;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class MediaParserTest {
@@ -94,25 +95,66 @@ public class MediaParserTest {
 
 	@Test
 	public void testAudioFileParser() {
+		// Not easy to test as raw audio files stored on the web are rare and ephemeral.
+	}
 
+	@Test
+	public void testRegisterMediaParser() {
+		MediaParser.registerMediaParser(MyServiceMediaParser.class);
+
+		MediaParser mediaParser = MediaParser.getInstance("http://myservice.com");
+
+		assertThat(mediaParser, is(instanceOf(MyServiceMediaParser.class)));
+	}
+
+	@Test
+	public void testUnregisterMediaParser() {
+		MediaParser.unregisterMediaParser(YoutubeParser.class);
+
+		MediaParser mediaParser = MediaParser.getInstance("http://www.youtube.com/watch?v=9bZkp7q19f0");
+
+		assertThat(mediaParser, is(nullValue()));
 	}
 
     private void checkThumbnailAndUrlContentType(MediaParser mediaParser, Class<? extends MediaParser> expectedClass,
                                                  int thumbnailSize, MediaType expectedContentMediaType,
-                                                 String expectedContentType, String expectedContentMimeType)
-		    throws IOException {
+                                                 String expectedContentType) throws IOException {
         assertThat(mediaParser, is(instanceOf(expectedClass)));
 
         URL thumbnailUrl = new URL(mediaParser.getThumbnailUrl(thumbnailSize));
         URLConnection thumbnailConnection = thumbnailUrl.openConnection();
 	    // Thumbnails are images.
         assertThat(thumbnailConnection.getHeaderField("Content-Type"), containsString("image/"));
-	    assertThat(mediaParser.getThumbnailMimeType(thumbnailSize), containsString("image/"));
 
         URL contentUrl = new URL(mediaParser.getContentUrl());
         URLConnection imageConnection = contentUrl.openConnection();
         assertThat(imageConnection.getHeaderField("Content-Type"), containsString(expectedContentType));
-	    assertThat(mediaParser.getContentMimeType(), containsString(expectedContentMimeType));
 	    assertThat(mediaParser.getContentMediaType(), is(expectedContentMediaType));
     }
+
+	private static class MyServiceMediaParser extends MediaParser {
+		MyServiceMediaParser(String url) {
+			super(url);
+		}
+
+		@Override
+		protected boolean matches() {
+			return mUrl.contains("myservice.com");
+		}
+
+		@Override
+		protected String createThumbnailUrl(int smallestSide) {
+			return null;
+		}
+
+		@Override
+		protected String createContentUrl() {
+			return null;
+		}
+
+		@Override
+		protected MediaType getContentMediaType() {
+			return null;
+		}
+	}
 }

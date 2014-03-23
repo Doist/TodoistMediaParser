@@ -52,6 +52,20 @@ public class MediaParserTest {
         checkThumbnailAndUrlContentType(mediaParser, YfrogParser.class, 90, MediaType.OTHER, "text/html");
     }
 
+	@Test
+	public void testDeviantartParser() throws IOException {
+		MediaParser mediaParser;
+
+		mediaParser = MediaParser.getInstance("http://www.deviantart.com/art/Growing-Bird-441918288");
+		checkThumbnailAndUrlContentType(mediaParser, DeviantartParser.class, 666, MediaType.OTHER, "text/html");
+
+		mediaParser = MediaParser.getInstance("http://fav.me/d4klbrc");
+		checkThumbnailAndUrlContentType(mediaParser, DeviantartParser.class, 666, MediaType.OTHER, "text/html");
+
+		mediaParser = MediaParser.getInstance("http://sta.sh/0xhhdd19ax3");
+		checkThumbnailAndUrlContentType(mediaParser, DeviantartParser.class, 666, MediaType.OTHER, "text/html");
+	}
+
     @Test
     public void testImageFileParser() throws IOException {
         MediaParser mediaParser;
@@ -81,11 +95,14 @@ public class MediaParserTest {
     public void testVimeoParser() throws IOException {
         MediaParser mediaParser;
 
+	    mediaParser = MediaParser.getInstance("http://vimeo.com/67410022");
+	    checkThumbnailAndUrlContentType(mediaParser, VimeoParser.class, 666, MediaType.VIDEO, "text/html");
+
         mediaParser = MediaParser.getInstance("http://vimeo.com/album/2642665/video/74622970");
         checkThumbnailAndUrlContentType(mediaParser, VimeoParser.class, 666, MediaType.VIDEO, "text/html");
 
-        mediaParser = MediaParser.getInstance("http://vimeo.com/67410022");
-        checkThumbnailAndUrlContentType(mediaParser, VimeoParser.class, 666, MediaType.VIDEO, "text/html");
+	    mediaParser = MediaParser.getInstance("http://vimeo.com/groups/shortfilms/videos/85347833");
+	    checkThumbnailAndUrlContentType(mediaParser, VimeoParser.class, 666, MediaType.VIDEO, "text/html");
     }
 
     @Test

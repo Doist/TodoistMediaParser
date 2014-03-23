@@ -11,6 +11,7 @@ public abstract class MediaParser {
                 add(InstagramParser.class);
                 add(TwitpicParser.class);
                 add(YfrogParser.class);
+	            add(DeviantartParser.class);
                 add(ImageFileParser.class);
                 add(YoutubeParser.class);
                 add(VimeoParser.class);

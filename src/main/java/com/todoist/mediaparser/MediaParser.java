@@ -10,6 +10,7 @@ public abstract class MediaParser {
                 add(ImglyParser.class);
                 add(InstagramParser.class);
                 add(TwitpicParser.class);
+	            add(FlickrParser.class);
                 add(YfrogParser.class);
 	            add(DeviantartParser.class);
                 add(ImageFileParser.class);

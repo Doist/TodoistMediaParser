@@ -38,6 +38,19 @@ public class MediaParserTest {
         checkThumbnailAndUrlContentType(mediaParser, TwitpicParser.class, 100, MediaType.IMAGE, "image/");
     }
 
+	@Test
+	public void testFlickrParser() throws IOException {
+		MediaParser mediaParser;
+
+		mediaParser =
+				MediaParser.getInstance("http://www.flickr.com/photos/mwb-photos/13335437595/in/explore-2014-03-22");
+		checkThumbnailAndUrlContentType(mediaParser, FlickrParser.class, 666, MediaType.OTHER, "image/");
+
+		mediaParser =
+				MediaParser.getInstance("https://flic.kr/p/mmGuhg");
+		checkThumbnailAndUrlContentType(mediaParser, FlickrParser.class, 666, MediaType.OTHER, "text/html");
+	}
+
     @Test
     public void testYfrogParser() throws IOException {
         MediaParser mediaParser;

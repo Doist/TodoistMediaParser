@@ -1,67 +1,54 @@
 package com.todoist.mediaparser;
 
-import com.todoist.mediaparser.util.HttpUtils;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
 import com.todoist.mediaparser.util.MediaType;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-class YoutubeParser extends AbsMediaParserWithId {
-    private static final String THUMBNAIL_REGEXP = "\"thumbnail_url\"\\s*:\\s*\"([^\"]+)\"";
-    private static final String TEMPLATE = "http://www.youtube.com/oembed?url=%s&format=json";
+public class YoutubeParser extends AbsOEmbedParser {
+	private static Pattern sPattern;
 
-    private static Pattern sIdPattern;
-    private static Pattern sThumbnailUrlPattern;
+	YoutubeParser(String url) {
+		super(url);
+	}
 
-    YoutubeParser(String url) {
-        super(url);
-    }
+	@Override
+	protected boolean matches() {
+		return (mUrl.contains("youtube.com/") || mUrl.contains("youtu.be/")) && getPattern().matcher(mUrl).lookingAt();
+	}
 
-    @Override
-    protected boolean matches() {
-        return (mUrl.contains("youtube.com/") || mUrl.contains("youtu.be/")) && super.matches();
-    }
+	@Override
+	protected MediaType getContentMediaType() {
+		return MediaType.VIDEO;
+	}
 
-    @Override
-    public String createThumbnailUrl(int smallestSide) {
-        try {
-            URL url = new URL(String.format(TEMPLATE, mUrl));
-            String response = HttpUtils.readFrom((HttpURLConnection)url.openConnection());
+	@Override
+	protected String getOEmbedUrlTemplate() {
+		return "http://www.youtube.com/oembed?url=%s&format=json";
+	}
 
-            if(sThumbnailUrlPattern == null)
-                sThumbnailUrlPattern = Pattern.compile(THUMBNAIL_REGEXP);
+	@Override
+	protected String getThumbnailUrl(JsonParser jsonParser) throws IOException {
+		if(jsonParser.nextToken() == JsonToken.START_OBJECT) {
+			while(jsonParser.nextToken() != JsonToken.END_OBJECT) {
+				String name = jsonParser.getCurrentName();
+				jsonParser.nextToken(); // Move to the value.
+				if("thumbnail_url".equals(name))
+					return jsonParser.getText();
+			}
+		}
+		return null;
+	}
 
-            Matcher matcher = sThumbnailUrlPattern.matcher(response);
-            if(matcher.find())
-                return matcher.group(1).replaceAll("\\\\/", "/");
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    @Override
-    public String createContentUrl() {
-        return mUrl;
-    }
-
-    @Override
-    public MediaType getContentMediaType() {
-        return MediaType.VIDEO;
-    }
-
-    @Override
-    protected Pattern getIdPattern() {
-        if(sIdPattern == null) {
-            sIdPattern = Pattern.compile(
-                    "(https?://(?:www\\.)?(?:youtube\\.com/watch\\?v=|youtu\\.be/)([\\w-]+)/?)",
-                    Pattern.CASE_INSENSITIVE
-            );
-        }
-        return sIdPattern;
-    }
+	private Pattern getPattern() {
+		if(sPattern == null) {
+			sPattern = Pattern.compile(
+					"https?://(?:www\\.)?(?:youtube\\.com/watch\\?v=|youtu\\.be/)[\\w-]+/?",
+					Pattern.CASE_INSENSITIVE
+			);
+		}
+		return sPattern;
+	}
 }

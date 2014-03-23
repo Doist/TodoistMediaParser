@@ -72,7 +72,7 @@ public abstract class MediaParser {
 	/**
 	 * Returns the url for this media. Redirects might need to be followed.
 	 */
-	public final String getContentUrl() {
+	public String getContentUrl() {
 		if(mContentUrl == null)
 			mContentUrl = createContentUrl();
 		return mContentUrl;
@@ -85,7 +85,7 @@ public abstract class MediaParser {
 	 *
 	 * This is not guaranteed to be fast, thus should be called from a background thread. Can be null.
 	 */
-	public final String getThumbnailUrl(int smallestSide) {
+	public String getThumbnailUrl(int smallestSide) {
 		if(mThumbnailUrl == null || mThumbnailSmallestSide != smallestSide) {
 			mThumbnailUrl = createThumbnailUrl(smallestSide);
 			mThumbnailSmallestSide = smallestSide;

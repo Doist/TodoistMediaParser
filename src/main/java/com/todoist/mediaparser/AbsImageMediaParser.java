@@ -25,7 +25,12 @@ abstract class AbsImageMediaParser extends AbsMediaParserWithId {
         return String.format(getUrlTemplate(), mId, size.key);
     }
 
-    @Override
+	@Override
+	public boolean isThumbnailImmediate(int smallestSide) {
+		return true; // It's always immediate.
+	}
+
+	@Override
     public String createContentUrl() {
         Size[] availableSizes = getAvailableSizes();
         return String.format(getUrlTemplate(), mId, availableSizes[availableSizes.length - 1].key);

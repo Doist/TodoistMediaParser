@@ -23,6 +23,11 @@ class ImageFileParser extends MediaParser {
         return createContentUrl();
     }
 
+	@Override
+	public boolean isThumbnailImmediate(int smallestSide) {
+		return true; // It's always immediate.
+	}
+
     @Override
     public String createContentUrl() {
         return mUrl;

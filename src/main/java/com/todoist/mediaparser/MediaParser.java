@@ -86,9 +86,9 @@ public abstract class MediaParser {
 	}
 
 	/**
-	 * Returns an image thumbnail for this media. Redirects might need to be followed. The thumbnail size will be equal
-	 * to or larger than {@code smallestSide}, unless it's not available or the size is negative. In those cases, the
-	 * largest possible thumbnail image is returned.
+	 * Returns an image thumbnail for this media. Redirects might need to be followed. The thumbnail smallest side will
+	 * be equal to or larger than {@code smallestSide}, unless it's not available or the size is negative. In those
+	 * cases, the largest possible thumbnail image is returned.
 	 *
 	 * This is not guaranteed to be fast, thus should be called from a background thread. Can be null.
 	 */
@@ -98,6 +98,13 @@ public abstract class MediaParser {
 			mThumbnailSmallestSide = smallestSide;
 		}
 		return mThumbnailUrl;
+	}
+
+	/**
+	 * Returns true if this parser is able to get a thumbnail immediately, false if not.
+	 */
+	public boolean isThumbnailImmediate(int smallestSide) {
+		return mThumbnailUrl != null && mThumbnailSmallestSide == smallestSide;
 	}
 
 	/**

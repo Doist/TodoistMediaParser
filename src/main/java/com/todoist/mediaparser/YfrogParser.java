@@ -38,10 +38,15 @@ class YfrogParser extends AbsMediaParserWithId {
             }
         }
         if(size == null)
-            AVAILABLE_SIZES.get(AVAILABLE_SIZES.size() - 1);
+            size = AVAILABLE_SIZES.get(AVAILABLE_SIZES.size() - 1);
 
         return String.format("http://yfrog.com/%1$s:%2$s", mId, size.key);
     }
+
+	@Override
+	public boolean isThumbnailImmediate(int smallestSide) {
+		return true; // It's always immediate.
+	}
 
     @Override
     public String createContentUrl() {

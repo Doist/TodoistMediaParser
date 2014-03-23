@@ -21,8 +21,13 @@ class VideoFileParser extends MediaParser {
 
     @Override
     public String createThumbnailUrl(int smallestSide) {
-        return createContentUrl();
+        return null;
     }
+
+	@Override
+	public boolean isThumbnailImmediate(int smallestSide) {
+		return true; // It's always immediate.
+	}
 
     @Override
     public String createContentUrl() {

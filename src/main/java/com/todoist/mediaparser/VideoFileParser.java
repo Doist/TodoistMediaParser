@@ -33,7 +33,7 @@ class VideoFileParser extends MediaParser {
     }
 
     @Override
-    public MediaType createContentMediaType() {
+    public MediaType getContentMediaType() {
         return MediaType.VIDEO;
     }
 

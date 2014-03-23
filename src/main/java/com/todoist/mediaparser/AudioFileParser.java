@@ -34,7 +34,7 @@ class AudioFileParser extends MediaParser {
     }
 
     @Override
-    public MediaType createContentMediaType() {
+    public MediaType getContentMediaType() {
         return MediaType.AUDIO;
     }
 }

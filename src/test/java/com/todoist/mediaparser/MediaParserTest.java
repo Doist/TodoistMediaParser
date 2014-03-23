@@ -17,7 +17,7 @@ public class MediaParserTest {
     @Test
     public void testImglyParsing() throws IOException {
         MediaParser mediaParser = MediaParser.getInstance("http://img.ly/ylsL");
-        checkThumbnailAndUrlContentType(mediaParser, ImglyParser.class, 150, MediaType.IMAGE, "image/", "image/");
+        checkThumbnailAndUrlContentType(mediaParser, ImglyParser.class, 150, MediaType.IMAGE, "image/");
     }
 
     @Test
@@ -25,16 +25,16 @@ public class MediaParserTest {
         MediaParser mediaParser;
 
         mediaParser = MediaParser.getInstance("http://instagram.com/p/eQKJG2AClg/");
-        checkThumbnailAndUrlContentType(mediaParser, InstagramParser.class, 100, MediaType.IMAGE, "image/", "image/");
+        checkThumbnailAndUrlContentType(mediaParser, InstagramParser.class, 100, MediaType.IMAGE, "image/");
 
         mediaParser = MediaParser.getInstance("http://instagr.am/p/jxOBBDgCo5");
-        checkThumbnailAndUrlContentType(mediaParser, InstagramParser.class, 200, MediaType.IMAGE, "image/", "image/");
+        checkThumbnailAndUrlContentType(mediaParser, InstagramParser.class, 200, MediaType.IMAGE, "image/");
     }
 
     @Test
     public void testTwitpicParser() throws IOException {
         MediaParser mediaParser = MediaParser.getInstance("http://twitpic.com/dylpf2");
-        checkThumbnailAndUrlContentType(mediaParser, TwitpicParser.class, 100, MediaType.IMAGE, "image/", "image/");
+        checkThumbnailAndUrlContentType(mediaParser, TwitpicParser.class, 100, MediaType.IMAGE, "image/");
     }
 
     @Test
@@ -42,13 +42,13 @@ public class MediaParserTest {
         MediaParser mediaParser;
 
         mediaParser = MediaParser.getInstance("http://twitter.yfrog.com/ocre1nbdj");
-        checkThumbnailAndUrlContentType(mediaParser, YfrogParser.class, 75, MediaType.OTHER, "text/html", "text/html");
+        checkThumbnailAndUrlContentType(mediaParser, YfrogParser.class, 75, MediaType.OTHER, "text/html");
 
         mediaParser = MediaParser.getInstance("http://yfrog.com/nvvdfdej");
-        checkThumbnailAndUrlContentType(mediaParser, YfrogParser.class, 150, MediaType.OTHER, "text/html", "text/html");
+        checkThumbnailAndUrlContentType(mediaParser, YfrogParser.class, 150, MediaType.OTHER, "text/html");
 
         mediaParser = MediaParser.getInstance("http://www.yfrog.com/0ia9mcz");
-        checkThumbnailAndUrlContentType(mediaParser, YfrogParser.class, 90, MediaType.OTHER, "text/html", "text/html");
+        checkThumbnailAndUrlContentType(mediaParser, YfrogParser.class, 90, MediaType.OTHER, "text/html");
     }
 
     @Test
@@ -56,13 +56,13 @@ public class MediaParserTest {
         MediaParser mediaParser;
 
         mediaParser = MediaParser.getInstance("http://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Sego_lily_cm.jpg/225px-Sego_lily_cm.jpg");
-        checkThumbnailAndUrlContentType(mediaParser, ImageFileParser.class, 666, MediaType.IMAGE, "image/", "image/");
+        checkThumbnailAndUrlContentType(mediaParser, ImageFileParser.class, 666, MediaType.IMAGE, "image/");
 
         mediaParser = MediaParser.getInstance("http://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png");
-        checkThumbnailAndUrlContentType(mediaParser, ImageFileParser.class, 666, MediaType.IMAGE, "image/", "image/");
+        checkThumbnailAndUrlContentType(mediaParser, ImageFileParser.class, 666, MediaType.IMAGE, "image/");
 
         mediaParser = MediaParser.getInstance("http://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif");
-        checkThumbnailAndUrlContentType(mediaParser, ImageFileParser.class, 666, MediaType.IMAGE, "image/", "image/");
+        checkThumbnailAndUrlContentType(mediaParser, ImageFileParser.class, 666, MediaType.IMAGE, "image/");
     }
 
     @Test
@@ -70,10 +70,10 @@ public class MediaParserTest {
         MediaParser mediaParser;
 
         mediaParser = MediaParser.getInstance("https://www.youtube.com/watch?v=9bZkp7q19f0");
-        checkThumbnailAndUrlContentType(mediaParser, YoutubeParser.class, 666, MediaType.VIDEO, "text/html", "text/html");
+        checkThumbnailAndUrlContentType(mediaParser, YoutubeParser.class, 666, MediaType.VIDEO, "text/html");
 
         mediaParser = MediaParser.getInstance("http://youtu.be/wcLNteez3c4");
-        checkThumbnailAndUrlContentType(mediaParser, YoutubeParser.class, 666, MediaType.VIDEO, "text/html", "text/html");
+        checkThumbnailAndUrlContentType(mediaParser, YoutubeParser.class, 666, MediaType.VIDEO, "text/html");
     }
 
     @Test
@@ -81,10 +81,10 @@ public class MediaParserTest {
         MediaParser mediaParser;
 
         mediaParser = MediaParser.getInstance("http://vimeo.com/album/2642665/video/74622970");
-        checkThumbnailAndUrlContentType(mediaParser, VimeoParser.class, 666, MediaType.VIDEO, "text/html", "text/html");
+        checkThumbnailAndUrlContentType(mediaParser, VimeoParser.class, 666, MediaType.VIDEO, "text/html");
 
         mediaParser = MediaParser.getInstance("http://vimeo.com/67410022");
-        checkThumbnailAndUrlContentType(mediaParser, VimeoParser.class, 666, MediaType.VIDEO, "text/html", "text/html");
+        checkThumbnailAndUrlContentType(mediaParser, VimeoParser.class, 666, MediaType.VIDEO, "text/html");
     }
 
     @Test

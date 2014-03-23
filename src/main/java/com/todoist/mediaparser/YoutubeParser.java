@@ -50,7 +50,7 @@ class YoutubeParser extends AbsMediaParserWithId {
     }
 
     @Override
-    public MediaType createContentMediaType() {
+    public MediaType getContentMediaType() {
         return MediaType.VIDEO;
     }
 

@@ -54,7 +54,7 @@ class YfrogParser extends AbsMediaParserWithId {
     }
 
     @Override
-    public MediaType createContentMediaType() {
+    public MediaType getContentMediaType() {
         return MediaType.OTHER; // Can be IMAGE or VIDEO.
     }
 

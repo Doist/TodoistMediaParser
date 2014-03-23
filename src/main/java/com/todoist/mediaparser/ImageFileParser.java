@@ -33,7 +33,7 @@ class ImageFileParser extends MediaParser {
     }
 
     @Override
-    public MediaType createContentMediaType() {
+    public MediaType getContentMediaType() {
         return MediaType.IMAGE;
     }
 

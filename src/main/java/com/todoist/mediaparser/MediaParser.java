@@ -1,11 +1,7 @@
 package com.todoist.mediaparser;
 
 import com.todoist.mediaparser.util.MediaType;
-import com.todoist.mediaparser.util.MimeUtils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.LinkedHashSet;
 
 public abstract class MediaParser {
@@ -26,9 +22,6 @@ public abstract class MediaParser {
     protected String mContentUrl;
 	protected String mThumbnailUrl;
 	protected int mThumbnailSmallestSide;
-	protected MediaType mContentType;
-	protected String mContentMimeType;
-	protected String mThumbnailMimeType;
 
     /**
      * Returns an appropriate {@link MediaParser} instance for this {@code url}, or {code null} if not supported.
@@ -108,54 +101,6 @@ public abstract class MediaParser {
 	}
 
 	/**
-	 * Returns the media type of the content.
-	 */
-	public final MediaType getContentMediaType() {
-		if(mContentType == null)
-			mContentType = createContentMediaType();
-		return mContentType;
-	}
-
-	/**
-	 * Returns the mime type of the content.
-	 */
-	public final String getContentMimeType() {
-		if(mContentMimeType == null)
-			mContentMimeType = getMimeTypeFor(getContentUrl());
-		return mContentMimeType;
-	}
-
-	/**
-	 * Returns the mime type of thumbnail for {@code smallestSide}.
-	 */
-	public final String getThumbnailMimeType(int smallestSide) {
-		if(mThumbnailMimeType == null)
-			mThumbnailMimeType = getMimeTypeFor(getThumbnailUrl(smallestSide));
-		return mThumbnailMimeType;
-	}
-
-	private String getMimeTypeFor(String urlString) {
-		String mimeType = MimeUtils.guessMimeTypeFromExtension(MimeUtils.getExtension(urlString));
-		if(mimeType == null) {
-			InputStream in = null;
-			try {
-				in = new URL(urlString).openStream();
-				mimeType = MimeUtils.guessContentTypeFromStream(in);
-			} catch(IOException e) {
-				e.printStackTrace();
-			} finally {
-				try {
-					if(in != null)
-						in.close();
-				} catch(IOException e) {
-						/* Ignore. */
-				}
-			}
-		}
-		return mimeType;
-	}
-
-	/**
 	 * Returns true if this parser is appropriate for {@code mUrl}, or false if not.
 	 */
 	protected abstract boolean matches();
@@ -173,8 +118,7 @@ public abstract class MediaParser {
 	protected abstract String createContentUrl();
 
 	/**
-	 * Returns the type of the content.
-	 * @see #getContentMediaType().
+	 * Returns the media type of the content.
 	 */
-	protected abstract MediaType createContentMediaType();
+	protected abstract MediaType getContentMediaType();
 }

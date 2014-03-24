@@ -1,7 +1,9 @@
 package com.todoist.mediaparser.mediaparser;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.todoist.mediaparser.util.MediaType;
 
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 public class DeviantartParser extends BaseOEmbedMediaParserWithContent {
@@ -27,6 +29,24 @@ public class DeviantartParser extends BaseOEmbedMediaParserWithContent {
 			);
 		}
 		return sMatchingPattern;
+	}
+
+	@Override
+	protected String createThumbnailUrl(int smallestSide) {
+		try {
+			JsonParser jsonParser = JSON_FACTORY.createParser(getOEmbedResponse());
+			int thumbnailWidth = Integer.valueOf(getValueForName(jsonParser, "thumbnail_width"));
+			int thumbnailHeight = Integer.valueOf(getValueForName(jsonParser, "thumbnail_height"));
+			jsonParser.close();
+
+			if(Math.min(thumbnailWidth, thumbnailHeight) < smallestSide)
+				return createContentUrl();
+		} catch(MissingValueForNameException | NumberFormatException e) {
+			/* Ignore. */
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		return super.createThumbnailUrl(smallestSide);
 	}
 
 	@Override

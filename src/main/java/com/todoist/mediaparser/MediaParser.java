@@ -113,6 +113,11 @@ public abstract class MediaParser {
 	}
 
 	/**
+	 * Returns the media type of the content.
+	 */
+	public abstract MediaType getContentMediaType();
+
+	/**
 	 * Returns an image thumbnail for this media. Redirects might need to be followed. The thumbnail smallest side will
 	 * be equal to or larger than {@code smallestSide}, unless it's not available or the size is negative. In those
 	 * cases, the largest possible thumbnail image is returned.
@@ -133,11 +138,6 @@ public abstract class MediaParser {
 	public boolean isThumbnailImmediate(int smallestSide) {
 		return mThumbnailUrl != null && mThumbnailSmallestSide == smallestSide;
 	}
-
-	/**
-	 * Returns the media type of the content.
-	 */
-	public abstract MediaType getContentMediaType();
 
 	/**
 	 * Returns true if this parser is appropriate for {@code mUrl}, or false if not.

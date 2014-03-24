@@ -13,7 +13,13 @@ MediaParser mediaParser = MediaParser.getInstance(url);
 To get a direct link to this content, use:
 
 ```
-mediaParser.getContentUrl();
+mediaParser.getContentUrl(); // Same as `getUrl()` when there's no direct link.
+```
+
+To get the type of the content `getContentUrl()` returns, use:
+
+```
+mediaParser.getContentMediaType(); // Type.IMAGE, Type.VIDEO, Type.AUDIO or Type.OTHER.
 ```
 
 To get an image thumbnail of this content, equal or larger than `smallestSide`, use:
@@ -22,30 +28,28 @@ To get an image thumbnail of this content, equal or larger than `smallestSide`, 
 mediaParser.getThumbnailUrl(smallestSide); // Can be null.
 ```
 
-To get the type of the content `getUrl()` returns, use:
+Finally, to know if the thumbnail can be obtained immedately or if it requires additonal work (like http requests), use:
 
 ```
-mediaParser.getContentMediaType(); // Type.IMAGE, Type.VIDEO, Type.AUDIO or Type.EXTERNAL.
-```
-
-To get the mime type of the content `getUrl()` returns, use:
-
-```
-mediaParser.getContentMimeType(); // Checks extension. If not certain, peeks content.
-```
-
-To get the mime type of the image thumbnail returned by `getThumbnailUrl(smallestSide)`, use:
-
-```
-mediaParser.getThumbnailMimeType(smallestSide);
+public boolean isThumbnailImmediate(int smallestSide);
 ```
 
 ## Supported services
 Besides urls which point directly to image, video and audio files, these services are also supported:
 
+- deviantart.com
+- flickr.com
+- hulu.com
 - img.ly
 - instagr.am
+- justin.tv
+- rdio.com
+- screenr.com
+- slideshare.com
+- soundcloud.com
+- spotify.com
+- ted.com
 - twitpic.com
+- vimeo.com
 - yfrog.com
 - youtube.com
-- vimeo.com

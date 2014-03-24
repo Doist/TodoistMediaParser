@@ -32,6 +32,8 @@ abstract class BaseOEmbedMediaParserWithContent extends BaseOEmbedMediaParser {
 			JsonParser jsonParser = JSON_FACTORY.createParser(getOEmbedResponse());
 			contentUrl = getValueForName(jsonParser, getOEmbedContentUrlName());
 			jsonParser.close();
+		} catch(MissingValueForNameException e) {
+			/* Ignore. */
 		} catch(IOException e) {
 			e.printStackTrace();
 		}

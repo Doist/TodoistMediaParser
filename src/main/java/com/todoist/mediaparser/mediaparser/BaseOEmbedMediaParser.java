@@ -44,6 +44,8 @@ abstract class BaseOEmbedMediaParser extends MediaParser {
 			JsonParser jsonParser = JSON_FACTORY.createParser(getOEmbedResponse());
 			thumbnailUrl = getValueForName(jsonParser, getOEmbedThumbnailUrlName());
 			jsonParser.close();
+		} catch(MissingValueForNameException e) {
+			/* Ignore. */
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -75,6 +77,12 @@ abstract class BaseOEmbedMediaParser extends MediaParser {
 					return jsonParser.getText();
 			}
 		}
-		throw new IOException("No value for '" + name + "'");
+		throw new MissingValueForNameException(name);
+	}
+
+	protected static class MissingValueForNameException extends IOException {
+		public MissingValueForNameException(String name) {
+			super("No value for '" + name + '"');
+		}
 	}
 }

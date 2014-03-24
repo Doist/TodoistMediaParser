@@ -137,6 +137,12 @@ public class MediaParserTest {
 		checkThumbnailAndUrlContentType(mediaParser, JustinTvParser.class, 666, MediaType.VIDEO, "text/html");
 	}
 
+	@Test
+	public void testScreenrParser() throws IOException {
+		MediaParser mediaParser = MediaParser.getInstance("http://www.screenr.com/NTHH");
+		checkThumbnailAndUrlContentType(mediaParser, ScreenrParser.class, 666, MediaType.VIDEO, "text/html");
+	}
+
     @Test
     public void testVideoFileParser() {
         // This isn't easy to test as raw public videos stored on the web are rare and ephemeral.

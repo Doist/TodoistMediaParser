@@ -9,6 +9,7 @@ import com.todoist.mediaparser.mediaparser.ImglyParser;
 import com.todoist.mediaparser.mediaparser.InstagramParser;
 import com.todoist.mediaparser.mediaparser.JustinTvParser;
 import com.todoist.mediaparser.mediaparser.RdioParser;
+import com.todoist.mediaparser.mediaparser.ScreenrParser;
 import com.todoist.mediaparser.mediaparser.SpotifyParser;
 import com.todoist.mediaparser.mediaparser.TwitpicParser;
 import com.todoist.mediaparser.mediaparser.VideoFileParser;
@@ -22,24 +23,25 @@ import java.util.LinkedHashSet;
 import java.util.regex.Pattern;
 
 public abstract class MediaParser {
-    private static final LinkedHashSet<Class<? extends MediaParser>> sMediaParsers =
-            new LinkedHashSet<Class<? extends MediaParser>>() {{
-                add(ImglyParser.class);
-                add(InstagramParser.class);
-                add(TwitpicParser.class);
-                add(FlickrParser.class);
-                add(YfrogParser.class);
-                add(DeviantartParser.class);
-                add(ImageFileParser.class);
-                add(YoutubeParser.class);
-                add(VimeoParser.class);
-	            add(HuluParser.class);
-	            add(JustinTvParser.class);
-	            add(VideoFileParser.class);
-	            add(RdioParser.class);
-	            add(SpotifyParser.class);
-	            add(AudioFileParser.class);
-            }};
+	private static final LinkedHashSet<Class<? extends MediaParser>> sMediaParsers =
+			new LinkedHashSet<Class<? extends MediaParser>>() {{
+				add(ImglyParser.class);
+				add(InstagramParser.class);
+				add(TwitpicParser.class);
+				add(FlickrParser.class);
+				add(YfrogParser.class);
+				add(DeviantartParser.class);
+				add(ImageFileParser.class);
+				add(YoutubeParser.class);
+				add(VimeoParser.class);
+				add(HuluParser.class);
+				add(JustinTvParser.class);
+				add(ScreenrParser.class);
+				add(VideoFileParser.class);
+				add(RdioParser.class);
+				add(SpotifyParser.class);
+				add(AudioFileParser.class);
+			}};
 
 	protected String mUrl;
     protected String mContentUrl;

@@ -24,6 +24,15 @@ public class ScreenrParser extends BaseOEmbedMediaParser {
 	}
 
 	@Override
+	protected String createThumbnailUrl(int smallestSide) {
+		String thumbnailUrl = super.createThumbnailUrl(smallestSide);
+		if(smallestSide > 110)
+			return thumbnailUrl.replaceFirst("_thumb\\.jpg$", ".jpg");
+		else
+			return thumbnailUrl;
+	}
+
+	@Override
 	protected String getOEmbedUrlTemplate() {
 		return "http://www.screenr.com/api/oembed.json?url=%s";
 	}

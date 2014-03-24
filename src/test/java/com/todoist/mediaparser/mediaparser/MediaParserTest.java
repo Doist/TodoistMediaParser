@@ -74,13 +74,13 @@ public class MediaParserTest {
 		MediaParser mediaParser;
 
 		mediaParser = MediaParser.getInstance("http://www.deviantart.com/art/Growing-Bird-441918288");
-		checkThumbnailAndUrlContentType(mediaParser, DeviantartParser.class, 666, MediaType.OTHER, "image/");
+		checkThumbnailAndUrlContentType(mediaParser, DeviantartParser.class, 50, MediaType.OTHER, "image/");
 
 		mediaParser = MediaParser.getInstance("http://fav.me/d4klbrc");
-		checkThumbnailAndUrlContentType(mediaParser, DeviantartParser.class, 666, MediaType.OTHER, "image/");
+		checkThumbnailAndUrlContentType(mediaParser, DeviantartParser.class, 300, MediaType.OTHER, "image/");
 
 		mediaParser = MediaParser.getInstance("http://sta.sh/0xhhdd19ax3");
-		checkThumbnailAndUrlContentType(mediaParser, DeviantartParser.class, 666, MediaType.OTHER, "image/");
+		checkThumbnailAndUrlContentType(mediaParser, DeviantartParser.class, 600, MediaType.OTHER, "image/");
 	}
 
     @Test

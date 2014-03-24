@@ -9,10 +9,11 @@ import java.util.regex.Pattern;
  */
 public class ImglyParser extends BaseImageMediaParser {
 	private static Pattern sIdPattern;
+	private static Size[] sSizes;
 
-    ImglyParser(String url) {
-        super(url);
-    }
+	ImglyParser(String url) {
+		super(url);
+	}
 
 	@Override
 	protected Pattern getMatchingPattern() {
@@ -20,25 +21,28 @@ public class ImglyParser extends BaseImageMediaParser {
 	}
 
 	@Override
-    protected Size[] getAvailableSizes() {
-        return new Size[] {
-                new Size("mini", 75),
-                new Size("thumb", 150),
-                new Size("medium", 240),
-                new Size("large", 550),
-                new Size("full", -1)
-        };
-    }
+	protected Size[] getAvailableSizes() {
+		if(sSizes == null) {
+			sSizes = new Size[]{
+					new Size("mini", 75),
+					new Size("thumb", 150),
+					new Size("medium", 240),
+					new Size("large", 550),
+					new Size("full", -1)
+			};
+		}
+		return sSizes;
+	}
 
-    @Override
-    protected String getUrlTemplate() {
-        return "http://img.ly/show/%2$s/%1$s";
-    }
+	@Override
+	protected String getUrlTemplate() {
+		return "http://img.ly/show/%2$s/%1$s";
+	}
 
-    @Override
-    protected Pattern getIdPattern() {
-        if(sIdPattern == null)
-            sIdPattern = Pattern.compile("https?://(?:www\\.)?img\\.ly/(\\w+)/?");
-        return sIdPattern;
-    }
+	@Override
+	protected Pattern getIdPattern() {
+		if(sIdPattern == null)
+			sIdPattern = Pattern.compile("https?://(?:www\\.)?img\\.ly/(\\w+)/?");
+		return sIdPattern;
+	}
 }

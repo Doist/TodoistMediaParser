@@ -3,20 +3,14 @@ package com.todoist.mediaparser.mediaparser;
 import com.todoist.mediaparser.util.MediaType;
 import com.todoist.mediaparser.util.Size;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 
 /*
  * See: http://yfrog.com/page/api#a5
  */
 public class YfrogParser extends BaseMediaParserWithId {
-    private static final List<Size> AVAILABLE_SIZES = new ArrayList<Size>() {{
-        add(new Size("small", 100));
-        add(new Size("iphone", 480));
-    }};
-
     private static Pattern sIdPattern;
+	private static Size[] sSizes;
 
     YfrogParser(String url) {
         super(url);
@@ -32,25 +26,26 @@ public class YfrogParser extends BaseMediaParserWithId {
 		return MediaType.OTHER; // Can be IMAGE or VIDEO.
 	}
 
+	@Override
+	protected String createContentUrl() {
+		return mUrl;
+	}
+
     @Override
     protected String createThumbnailUrl(int smallestSide) {
         Size size = null;
 
-        for(Size availableSize : AVAILABLE_SIZES) {
+	    Size[] availableSizes = getAvailableSizes();
+        for(Size availableSize : availableSizes) {
             if(availableSize.smallestSide >= smallestSide) {
                 size = availableSize;
                 break;
             }
         }
         if(size == null)
-            size = AVAILABLE_SIZES.get(AVAILABLE_SIZES.size() - 1);
+            size = availableSizes[availableSizes.length - 1];
 
         return String.format("http://yfrog.com/%1$s:%2$s", mId, size.key);
-    }
-
-    @Override
-    protected String createContentUrl() {
-        return mUrl;
     }
 
     @Override
@@ -63,4 +58,14 @@ public class YfrogParser extends BaseMediaParserWithId {
         }
         return sIdPattern;
     }
+
+	private Size[] getAvailableSizes() {
+		if(sSizes == null) {
+			sSizes = new Size[]{
+					new Size("small", 100),
+					new Size("iphone", 480)
+			};
+		}
+		return sSizes;
+	}
 }

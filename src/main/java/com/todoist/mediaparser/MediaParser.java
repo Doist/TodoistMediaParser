@@ -3,6 +3,7 @@ package com.todoist.mediaparser;
 import com.todoist.mediaparser.mediaparser.AudioFileParser;
 import com.todoist.mediaparser.mediaparser.DeviantartParser;
 import com.todoist.mediaparser.mediaparser.FlickrParser;
+import com.todoist.mediaparser.mediaparser.HuluParser;
 import com.todoist.mediaparser.mediaparser.ImageFileParser;
 import com.todoist.mediaparser.mediaparser.ImglyParser;
 import com.todoist.mediaparser.mediaparser.InstagramParser;
@@ -29,7 +30,8 @@ public abstract class MediaParser {
                 add(ImageFileParser.class);
                 add(YoutubeParser.class);
                 add(VimeoParser.class);
-                add(VideoFileParser.class);
+	            add(HuluParser.class);
+	            add(VideoFileParser.class);
                 add(AudioFileParser.class);
             }};
 

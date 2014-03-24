@@ -120,6 +120,17 @@ public class MediaParserTest {
 	    checkThumbnailAndUrlContentType(mediaParser, VimeoParser.class, 666, MediaType.VIDEO, "text/html");
     }
 
+	@Test
+	public void testHuluParser() throws IOException {
+		MediaParser mediaParser;
+
+		mediaParser = MediaParser.getInstance("http://www.hulu.com/watch/609104");
+		checkThumbnailAndUrlContentType(mediaParser, HuluParser.class, 666, MediaType.VIDEO, "text/html");
+
+		mediaParser = MediaParser.getInstance("http://hulu.com/watch/20807/late-night-with-conan-obrien-wed-may-21-2008");
+		checkThumbnailAndUrlContentType(mediaParser, HuluParser.class, 666, MediaType.VIDEO, "text/html");
+	}
+
     @Test
     public void testVideoFileParser() {
         // This isn't easy to test as raw public videos stored on the web are rare and ephemeral.

@@ -1,11 +1,15 @@
 package com.todoist.mediaparser.mediaparser;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.todoist.mediaparser.util.MediaType;
+import com.todoist.mediaparser.util.Size;
 
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 public class SlideShareParser extends BaseOEmbedMediaParser {
 	private static Pattern sMatchingPattern;
+	private static Size[] sAvailableSizes;
 
 	SlideShareParser(String url) {
 		super(url);
@@ -29,9 +33,52 @@ public class SlideShareParser extends BaseOEmbedMediaParser {
 
 	@Override
 	protected String createThumbnailUrl(int smallestSide) {
-		// The "thumbnail" value doesn't include the protocol, it starts with "//".
 		String thumbnailUrl = super.createThumbnailUrl(smallestSide);
-		return thumbnailUrl != null ? "http:" + thumbnailUrl : null;
+		if(thumbnailUrl != null) {
+			try {
+				JsonParser jsonParser = JSON_FACTORY.createParser(getOEmbedResponse());
+				int thumbnailWidth = Integer.valueOf(getValueForName(jsonParser, "thumbnail_width"));
+				int thumbnailHeight = Integer.valueOf(getValueForName(jsonParser, "thumbnail_height"));
+				jsonParser.close();
+
+				Size size = null;
+				if(Math.min(thumbnailWidth, thumbnailHeight) < smallestSide) {
+					Size[] availableSizes = getAvailableSizes();
+					for(Size availableSize : availableSizes) {
+						if(availableSize.smallestSide >= smallestSide) {
+							size = availableSize;
+							break;
+						}
+					}
+					if(size == null)
+						size = availableSizes[availableSizes.length - 1];
+				}
+
+				System.out.println("Size! " + size);
+				if(size != null)
+					thumbnailUrl = thumbnailUrl.replaceFirst("thumbnail\\.jpg", "thumbnail-" + size.key + ".jpg");
+			} catch(MissingValueForNameException | NumberFormatException e) {
+			/* Ignore. */
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+
+			// The "thumbnail" value doesn't include the protocol, it starts with "//".
+			return "http:" + thumbnailUrl;
+		}
+		else {
+			return null;
+		}
+	}
+
+	private Size[] getAvailableSizes() {
+		if(sAvailableSizes == null) {
+			sAvailableSizes = new Size[] {
+					new Size("3", 240),
+					new Size("4", 576)
+			};
+		}
+		return sAvailableSizes;
 	}
 
 	@Override

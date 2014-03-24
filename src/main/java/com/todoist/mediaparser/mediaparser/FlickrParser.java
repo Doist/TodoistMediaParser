@@ -1,11 +1,13 @@
 package com.todoist.mediaparser.mediaparser;
 
 import com.todoist.mediaparser.util.MediaType;
+import com.todoist.mediaparser.util.Size;
 
 import java.util.regex.Pattern;
 
 public class FlickrParser extends BaseOEmbedMediaParserWithContent {
 	private static Pattern sMatchingPattern;
+	private static Size[] sAvailableSizes;
 
 	FlickrParser(String url) {
 		super(url);
@@ -29,12 +31,41 @@ public class FlickrParser extends BaseOEmbedMediaParserWithContent {
 
 	@Override
 	protected String createThumbnailUrl(int smallestSide) {
-		// Flickr thumbnails are tiny. If available, use content url.
-		String contentUrl = super.getContentUrl();
-		if(!mUrl.equals(contentUrl))
-			return contentUrl;
-		else
-			return super.createThumbnailUrl(smallestSide);
+		String thumbnailUrl = super.createThumbnailUrl(smallestSide);
+
+		Size size = null;
+		if(thumbnailUrl != null) {
+			for(Size availableSize : getAvailableSizes()) {
+				if(availableSize.smallestSide <= smallestSide) {
+					size = availableSize;
+					break;
+				}
+			}
+		}
+
+		if(size != null) {
+			return thumbnailUrl.replaceAll("_[sqtmnzcbo]\\.([jpg|gif|png])$", "_" + size.key + ".$1");
+		}
+		else {
+			// No thumbnail or none is large enough. Use content if it's a direct link.
+			String contentUrl = super.getContentUrl();
+			if(!mUrl.equals(contentUrl))
+				return contentUrl;
+			else
+				return thumbnailUrl;
+		}
+	}
+
+	private Size[] getAvailableSizes() {
+		if(sAvailableSizes == null) {
+			sAvailableSizes = new Size[] {
+					new Size("t", 75),
+					new Size("m", 150),
+					new Size("n", 240),
+					new Size("z", 550),
+			};
+		}
+		return sAvailableSizes;
 	}
 
 	@Override

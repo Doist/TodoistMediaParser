@@ -46,11 +46,13 @@ public class MediaParserTest {
 
 		mediaParser =
 				MediaParser.getInstance("http://www.flickr.com/photos/mwb-photos/13335437595/in/explore-2014-03-22");
-		checkThumbnailAndUrlContentType(mediaParser, FlickrParser.class, 666, MediaType.OTHER, "image/");
+		checkThumbnailAndUrlContentType(mediaParser, FlickrParser.class, 1000, MediaType.OTHER, "image/");
 
-		mediaParser =
-				MediaParser.getInstance("https://flic.kr/p/mmGuhg");
-		checkThumbnailAndUrlContentType(mediaParser, FlickrParser.class, 666, MediaType.OTHER, "text/html");
+		mediaParser = MediaParser.getInstance("http://flic.kr/p/hTVoH1");
+		checkThumbnailAndUrlContentType(mediaParser, FlickrParser.class, 400, MediaType.OTHER, "image/");
+
+		mediaParser = MediaParser.getInstance("https://flic.kr/p/mmGuhg");
+		checkThumbnailAndUrlContentType(mediaParser, FlickrParser.class, 245, MediaType.OTHER, "text/html");
 	}
 
     @Test

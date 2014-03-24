@@ -13,6 +13,7 @@ import com.todoist.mediaparser.mediaparser.ScreenrParser;
 import com.todoist.mediaparser.mediaparser.SlideShareParser;
 import com.todoist.mediaparser.mediaparser.SoundCloudParser;
 import com.todoist.mediaparser.mediaparser.SpotifyParser;
+import com.todoist.mediaparser.mediaparser.TedParser;
 import com.todoist.mediaparser.mediaparser.TwitpicParser;
 import com.todoist.mediaparser.mediaparser.VideoFileParser;
 import com.todoist.mediaparser.mediaparser.VimeoParser;
@@ -39,6 +40,7 @@ public abstract class MediaParser {
 				add(HuluParser.class);
 				add(JustinTvParser.class);
 				add(ScreenrParser.class);
+				add(TedParser.class);
 				add(VideoFileParser.class);
 				add(RdioParser.class);
 				add(SpotifyParser.class);

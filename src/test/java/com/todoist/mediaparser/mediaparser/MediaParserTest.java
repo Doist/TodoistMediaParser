@@ -143,9 +143,16 @@ public class MediaParserTest {
 		checkThumbnailAndUrlContentType(mediaParser, ScreenrParser.class, 666, MediaType.VIDEO, "text/html");
 	}
 
+	@Test
+	public void testTedParser() throws IOException {
+		MediaParser mediaParser =
+				MediaParser.getInstance("http://www.ted.com/talks/ken_robinson_says_schools_kill_creativity");
+		checkThumbnailAndUrlContentType(mediaParser, TedParser.class, 666, MediaType.VIDEO, "text/html");
+	}
+
     @Test
     public void testVideoFileParser() {
-        // This isn't easy to test as raw public videos stored on the web are rare and ephemeral.
+        // Not easy to test as raw public videos stored on the web are rare and ephemeral.
     }
 
 	@Test

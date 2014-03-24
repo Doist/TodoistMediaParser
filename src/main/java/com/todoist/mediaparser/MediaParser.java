@@ -7,6 +7,7 @@ import com.todoist.mediaparser.mediaparser.HuluParser;
 import com.todoist.mediaparser.mediaparser.ImageFileParser;
 import com.todoist.mediaparser.mediaparser.ImglyParser;
 import com.todoist.mediaparser.mediaparser.InstagramParser;
+import com.todoist.mediaparser.mediaparser.JustinTvParser;
 import com.todoist.mediaparser.mediaparser.TwitpicParser;
 import com.todoist.mediaparser.mediaparser.VideoFileParser;
 import com.todoist.mediaparser.mediaparser.VimeoParser;
@@ -31,6 +32,7 @@ public abstract class MediaParser {
                 add(YoutubeParser.class);
                 add(VimeoParser.class);
 	            add(HuluParser.class);
+	            add(JustinTvParser.class);
 	            add(VideoFileParser.class);
                 add(AudioFileParser.class);
             }};

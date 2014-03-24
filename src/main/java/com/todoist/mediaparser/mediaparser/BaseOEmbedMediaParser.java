@@ -17,7 +17,7 @@ abstract class BaseOEmbedMediaParser extends MediaParser {
 	protected static final JsonFactory JSON_FACTORY = new JsonFactory();
 
 	BaseOEmbedMediaParser(String url) {
-		super(url);
+		super(stripTrailingSlash(url));
 	}
 
 	@Override
@@ -84,5 +84,15 @@ abstract class BaseOEmbedMediaParser extends MediaParser {
 		public MissingValueForNameException(String name) {
 			super("No value for '" + name + '"');
 		}
+	}
+
+	/**
+	 * Strip trailing slash, as the url will be used in oEmbed calls and some providers don't like it.
+	 */
+	private static String stripTrailingSlash(String url) {
+		if(url.endsWith("/"))
+			return url.substring(0, url.length() - 1);
+		else
+			return url;
 	}
 }

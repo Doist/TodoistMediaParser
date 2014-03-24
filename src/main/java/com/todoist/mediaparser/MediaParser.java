@@ -8,6 +8,8 @@ import com.todoist.mediaparser.mediaparser.ImageFileParser;
 import com.todoist.mediaparser.mediaparser.ImglyParser;
 import com.todoist.mediaparser.mediaparser.InstagramParser;
 import com.todoist.mediaparser.mediaparser.JustinTvParser;
+import com.todoist.mediaparser.mediaparser.RdioParser;
+import com.todoist.mediaparser.mediaparser.SpotifyParser;
 import com.todoist.mediaparser.mediaparser.TwitpicParser;
 import com.todoist.mediaparser.mediaparser.VideoFileParser;
 import com.todoist.mediaparser.mediaparser.VimeoParser;
@@ -34,7 +36,9 @@ public abstract class MediaParser {
 	            add(HuluParser.class);
 	            add(JustinTvParser.class);
 	            add(VideoFileParser.class);
-                add(AudioFileParser.class);
+	            add(RdioParser.class);
+	            add(SpotifyParser.class);
+	            add(AudioFileParser.class);
             }};
 
 	protected String mUrl;

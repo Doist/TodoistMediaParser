@@ -143,6 +143,23 @@ public class MediaParserTest {
     }
 
 	@Test
+	public void testRdioParser() throws IOException {
+		MediaParser mediaParser = MediaParser.getInstance("http://www.rdio.com/artist/The_Black_Keys/album/Brothers/");
+		checkThumbnailAndUrlContentType(mediaParser, RdioParser.class, 666, MediaType.AUDIO, "text/html");
+	}
+
+	@Test
+	public void testSpotifyParser() throws IOException {
+		MediaParser mediaParser;
+
+		mediaParser = MediaParser.getInstance("https://open.spotify.com/track/6zKRBLEnVQoBw76yR1BPDj");
+		checkThumbnailAndUrlContentType(mediaParser, SpotifyParser.class, 666, MediaType.AUDIO, "text/html");
+
+		mediaParser = MediaParser.getInstance("https://play.spotify.com/artist/4WN5naL3ofxrVBgFpguzKo");
+		checkThumbnailAndUrlContentType(mediaParser, SpotifyParser.class, 666, MediaType.AUDIO, "text/html");
+	}
+
+	@Test
 	public void testAudioFileParser() {
 		// Not easy to test as raw audio files stored on the web are rare and ephemeral.
 	}

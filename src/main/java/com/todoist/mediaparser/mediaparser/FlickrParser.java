@@ -36,7 +36,7 @@ public class FlickrParser extends BaseOEmbedMediaParserWithContent {
 		Size size = null;
 		if(thumbnailUrl != null) {
 			for(Size availableSize : getAvailableSizes()) {
-				if(availableSize.smallestSide <= smallestSide) {
+				if(availableSize.smallestSide >= smallestSide) {
 					size = availableSize;
 					break;
 				}
@@ -44,7 +44,7 @@ public class FlickrParser extends BaseOEmbedMediaParserWithContent {
 		}
 
 		if(size != null) {
-			return thumbnailUrl.replaceAll("_[sqtmnzcbo]\\.([jpg|gif|png])$", "_" + size.key + ".$1");
+			return thumbnailUrl.replaceFirst("_[sqtmnzcbo]\\.([jpg|gif|png])$", "_" + size.key + ".$1");
 		}
 		else {
 			// No thumbnail or none is large enough. Use content if it's a direct link.

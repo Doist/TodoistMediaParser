@@ -166,6 +166,17 @@ public class MediaParserTest {
 	}
 
 	@Test
+	public void testSoundCloudParser() throws IOException {
+		MediaParser mediaParser;
+
+		mediaParser = MediaParser.getInstance("https://soundcloud.com/sizzlebird");
+		checkThumbnailAndUrlContentType(mediaParser, SoundCloudParser.class, 666, MediaType.AUDIO, "text/html");
+
+		mediaParser = MediaParser.getInstance("http://soundcloud.com/djguesse/amtrac-came-along-guesse-remix");
+		checkThumbnailAndUrlContentType(mediaParser, SoundCloudParser.class, 666, MediaType.AUDIO, "text/html");
+	}
+
+	@Test
 	public void testAudioFileParser() {
 		// Not easy to test as raw audio files stored on the web are rare and ephemeral.
 	}

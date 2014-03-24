@@ -171,6 +171,12 @@ public class MediaParserTest {
 	}
 
 	@Test
+	public void testSlideShareParser() throws IOException {
+		MediaParser mediaParser = MediaParser.getInstance("http://www.slideshare.net/goncalossilva/ruby-an-introduction");
+		checkThumbnailAndUrlContentType(mediaParser, SlideShareParser.class, 666, MediaType.OTHER, "text/html");
+	}
+
+	@Test
 	public void testRegisterMediaParser() {
 		MediaParser.registerMediaParser(MyServiceMediaParser.class);
 

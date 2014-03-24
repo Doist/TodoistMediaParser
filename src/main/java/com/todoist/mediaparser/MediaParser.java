@@ -10,6 +10,7 @@ import com.todoist.mediaparser.mediaparser.InstagramParser;
 import com.todoist.mediaparser.mediaparser.JustinTvParser;
 import com.todoist.mediaparser.mediaparser.RdioParser;
 import com.todoist.mediaparser.mediaparser.ScreenrParser;
+import com.todoist.mediaparser.mediaparser.SlideShareParser;
 import com.todoist.mediaparser.mediaparser.SpotifyParser;
 import com.todoist.mediaparser.mediaparser.TwitpicParser;
 import com.todoist.mediaparser.mediaparser.VideoFileParser;
@@ -41,6 +42,7 @@ public abstract class MediaParser {
 				add(RdioParser.class);
 				add(SpotifyParser.class);
 				add(AudioFileParser.class);
+				add(SlideShareParser.class);
 			}};
 
 	protected String mUrl;

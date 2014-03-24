@@ -38,7 +38,7 @@ abstract class BaseOEmbedMediaParser extends MediaParser {
 	}
 
 	@Override
-	protected final String createThumbnailUrl(int smallestSide) {
+	protected String createThumbnailUrl(int smallestSide) {
 		String thumbnailUrl = null;
 		try {
 			JsonParser jsonParser = JSON_FACTORY.createParser(getOEmbedResponse());

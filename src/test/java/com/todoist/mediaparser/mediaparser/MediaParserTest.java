@@ -192,8 +192,13 @@ public class MediaParserTest {
 
 	@Test
 	public void testSlideShareParser() throws IOException {
-		MediaParser mediaParser = MediaParser.getInstance("http://www.slideshare.net/goncalossilva/ruby-an-introduction");
-		checkThumbnailAndUrlContentType(mediaParser, SlideShareParser.class, 666, MediaType.OTHER, "text/html");
+		MediaParser mediaParser;
+
+		mediaParser = MediaParser.getInstance("http://www.slideshare.net/goncalossilva/ruby-an-introduction");
+		checkThumbnailAndUrlContentType(mediaParser, SlideShareParser.class, 230, MediaType.OTHER, "text/html");
+
+		mediaParser = MediaParser.getInstance("http://www.slideshare.net/intelleto/leading-lean-managing-lean-ux-work-in-the-enterprise-mx-2014-conference-by-adaptive-path");
+		checkThumbnailAndUrlContentType(mediaParser, SlideShareParser.class, 500, MediaType.OTHER, "text/html");
 	}
 
 	@Test
@@ -223,10 +228,9 @@ public class MediaParserTest {
                                                  String expectedContentType) throws IOException {
         assertThat(mediaParser, is(instanceOf(expectedClass)));
 
-        URL thumbnailUrl = new URL(mediaParser.getThumbnailUrl(thumbnailSize));
+	    URL thumbnailUrl = new URL(mediaParser.getThumbnailUrl(thumbnailSize));
         URLConnection thumbnailConnection = thumbnailUrl.openConnection();
-	    // Thumbnails are images.
-        assertThat(thumbnailConnection.getHeaderField("Content-Type"), containsString("image/"));
+        assertThat(thumbnailConnection.getHeaderField("Content-Type"), containsString("image/")); // Thumbnails are images.
 
 	    URL contentUrl = new URL(mediaParser.getContentUrl());
         URLConnection imageConnection = contentUrl.openConnection();

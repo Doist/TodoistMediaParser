@@ -34,8 +34,11 @@ public class DeviantartParser extends BaseOEmbedMediaParserWithContent {
 	@Override
 	protected String createThumbnailUrl(int smallestSide) {
 		try {
-			JsonParser jsonParser = JSON_FACTORY.createParser(getOEmbedResponse());
+			JsonParser jsonParser;
+			jsonParser = JSON_FACTORY.createParser(getOEmbedResponse());
 			int thumbnailWidth = Integer.valueOf(getValueForName(jsonParser, "thumbnail_width"));
+			jsonParser.close();
+			jsonParser = JSON_FACTORY.createParser(getOEmbedResponse());
 			int thumbnailHeight = Integer.valueOf(getValueForName(jsonParser, "thumbnail_height"));
 			jsonParser.close();
 

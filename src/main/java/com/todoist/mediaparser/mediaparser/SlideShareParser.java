@@ -36,8 +36,11 @@ public class SlideShareParser extends BaseOEmbedMediaParser {
 		String thumbnailUrl = super.createThumbnailUrl(smallestSide);
 		if(thumbnailUrl != null) {
 			try {
-				JsonParser jsonParser = JSON_FACTORY.createParser(getOEmbedResponse());
+				JsonParser jsonParser;
+				jsonParser = JSON_FACTORY.createParser(getOEmbedResponse());
 				int thumbnailWidth = Integer.valueOf(getValueForName(jsonParser, "thumbnail_width"));
+				jsonParser.close();
+				jsonParser = JSON_FACTORY.createParser(getOEmbedResponse());
 				int thumbnailHeight = Integer.valueOf(getValueForName(jsonParser, "thumbnail_height"));
 				jsonParser.close();
 
@@ -48,7 +51,7 @@ public class SlideShareParser extends BaseOEmbedMediaParser {
 				if(size != null)
 					thumbnailUrl = thumbnailUrl.replaceFirst("thumbnail\\.jpg", "thumbnail-" + size.key + ".jpg");
 			} catch(MissingValueForNameException | NumberFormatException e) {
-			/* Ignore. */
+				/* Ignore. */
 			} catch(IOException e) {
 				e.printStackTrace();
 			}

@@ -34,14 +34,8 @@ public class VimeoParser extends BaseOEmbedMediaParser {
 		String thumbnailUrl = super.createThumbnailUrl(smallestSide);
 
 		Size size = null;
-		if(thumbnailUrl != null) {
-			for(Size availableSize : getAvailableSizes()) {
-				if(availableSize.smallestSide <= smallestSide) {
-					size = availableSize;
-					break;
-				}
-			}
-		}
+		if(thumbnailUrl != null)
+			size = Size.getSizeForSmallestSide(getAvailableSizes(), smallestSide);
 
 		if(size != null)
 			return thumbnailUrl.replaceAll("_[\\d+]\\.jpg$", "_" + size.key + ".jpg");

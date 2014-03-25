@@ -20,19 +20,8 @@ abstract class BaseImageMediaParser extends BaseMediaParserWithId {
 
     @Override
     public String createThumbnailUrl(int smallestSide) {
-        Size size = null;
-
-        Size[] availableSizes = getAvailableSizes();
-        for(Size availableSize : availableSizes) {
-            if(availableSize.smallestSide >= smallestSide) {
-                size = availableSize;
-                break;
-            }
-        }
-        if(size == null)
-            size = availableSizes[availableSizes.length - 1];
-
-        return String.format(getUrlTemplate(), mId, size.key);
+	    Size size = Size.getBestSizeForSmallestSide(getAvailableSizes(), smallestSide);
+	    return String.format(getUrlTemplate(), mId, size.key);
     }
 
 	@Override

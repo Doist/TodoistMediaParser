@@ -32,17 +32,7 @@ public class FlickrParser extends BaseOEmbedMediaParserWithContent {
 	@Override
 	protected String createThumbnailUrl(int smallestSide) {
 		String thumbnailUrl = super.createThumbnailUrl(smallestSide);
-
-		Size size = null;
-		if(thumbnailUrl != null) {
-			for(Size availableSize : getAvailableSizes()) {
-				if(availableSize.smallestSide >= smallestSide) {
-					size = availableSize;
-					break;
-				}
-			}
-		}
-
+		Size size = Size.getSizeForSmallestSide(getAvailableSizes(), smallestSide);
 		if(size != null) {
 			return thumbnailUrl.replaceFirst("_[sqtmnzcbo]\\.([jpg|gif|png])$", "_" + size.key + ".$1");
 		}

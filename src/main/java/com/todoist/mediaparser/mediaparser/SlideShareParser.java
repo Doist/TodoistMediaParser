@@ -42,19 +42,9 @@ public class SlideShareParser extends BaseOEmbedMediaParser {
 				jsonParser.close();
 
 				Size size = null;
-				if(Math.min(thumbnailWidth, thumbnailHeight) < smallestSide) {
-					Size[] availableSizes = getAvailableSizes();
-					for(Size availableSize : availableSizes) {
-						if(availableSize.smallestSide >= smallestSide) {
-							size = availableSize;
-							break;
-						}
-					}
-					if(size == null)
-						size = availableSizes[availableSizes.length - 1];
-				}
+				if(Math.min(thumbnailWidth, thumbnailHeight) < smallestSide)
+					size = Size.getBestSizeForSmallestSide(getAvailableSizes(), smallestSide);
 
-				System.out.println("Size! " + size);
 				if(size != null)
 					thumbnailUrl = thumbnailUrl.replaceFirst("thumbnail\\.jpg", "thumbnail-" + size.key + ".jpg");
 			} catch(MissingValueForNameException | NumberFormatException e) {

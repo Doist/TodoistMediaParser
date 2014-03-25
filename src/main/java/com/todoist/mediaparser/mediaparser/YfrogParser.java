@@ -3,6 +3,9 @@ package com.todoist.mediaparser.mediaparser;
 import com.todoist.mediaparser.util.MediaType;
 import com.todoist.mediaparser.util.Size;
 
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.regex.Pattern;
 
 /*
@@ -10,16 +13,12 @@ import java.util.regex.Pattern;
  */
 public class YfrogParser extends BaseMediaParserWithId {
     private static Pattern sIdPattern;
-	private static Size[] sSizes;
+	private static Size[] sPhotoSizes;
+	private static Size[] sVideoSizes;
 
     YfrogParser(String url) {
         super(url);
     }
-
-	@Override
-	public boolean isThumbnailImmediate(int smallestSide) {
-		return true; // Always immediate.
-	}
 
 	@Override
 	public MediaType getContentMediaType() {
@@ -35,8 +34,17 @@ public class YfrogParser extends BaseMediaParserWithId {
     protected String createThumbnailUrl(int smallestSide) {
         Size size = null;
 
-	    Size[] availableSizes = getAvailableSizes();
-        for(Size availableSize : availableSizes) {
+	    boolean isImage = true;
+	    try {
+		    URLConnection connection = new URL(String.format(getUrlTemplate(), mId, "iphone")).openConnection();
+		    String contentType = connection.getHeaderField("Content-Type");
+		    isImage = contentType == null || contentType.contains("image/");
+	    } catch(IOException e) {
+		    /* Ignore. */
+	    }
+
+	    Size[] availableSizes = isImage ? getAvailableImageSizes() : getAvailableVideoSizes();
+	    for(Size availableSize : availableSizes) {
             if(availableSize.smallestSide >= smallestSide) {
                 size = availableSize;
                 break;
@@ -45,7 +53,7 @@ public class YfrogParser extends BaseMediaParserWithId {
         if(size == null)
             size = availableSizes[availableSizes.length - 1];
 
-        return String.format("http://yfrog.com/%1$s:%2$s", mId, size.key);
+        return String.format(getUrlTemplate(), mId, size.key);
     }
 
     @Override
@@ -59,13 +67,27 @@ public class YfrogParser extends BaseMediaParserWithId {
         return sIdPattern;
     }
 
-	private Size[] getAvailableSizes() {
-		if(sSizes == null) {
-			sSizes = new Size[]{
+	private String getUrlTemplate() {
+		return "http://yfrog.com/%1$s:%2$s";
+	}
+
+	private Size[] getAvailableImageSizes() {
+		if(sPhotoSizes == null) {
+			sPhotoSizes = new Size[]{
 					new Size("small", 100),
-					new Size("iphone", 480)
+					new Size("medium", 640)
 			};
 		}
-		return sSizes;
+		return sPhotoSizes;
+	}
+
+	private Size[] getAvailableVideoSizes() {
+		if(sVideoSizes == null) {
+			sVideoSizes = new Size[]{
+					new Size("small", 100),
+					new Size("frame", 640)
+			};
+		}
+		return sVideoSizes;
 	}
 }

@@ -21,18 +21,6 @@ abstract class BaseOEmbedMediaParser extends MediaParser {
 	}
 
 	@Override
-	public String getThumbnailUrl(int smallestSide) {
-		mThumbnailSmallestSide = smallestSide; // Never refresh thumbnail, there's only one.
-		return super.getThumbnailUrl(smallestSide);
-	}
-
-	@Override
-	public boolean isThumbnailImmediate(int smallestSide) {
-		mThumbnailSmallestSide = smallestSide; // Never refresh thumbnail, there's only one.
-		return super.isThumbnailImmediate(smallestSide);
-	}
-
-	@Override
 	protected String createContentUrl() {
 		return mUrl;
 	}

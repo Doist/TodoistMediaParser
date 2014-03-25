@@ -17,6 +17,18 @@ public class JustinTvParser extends BaseOEmbedMediaParser {
 	}
 
 	@Override
+	public String getThumbnailUrl(int smallestSide) {
+		mThumbnailSmallestSide = smallestSide; // Never refresh thumbnail, there's only one.
+		return super.getThumbnailUrl(smallestSide);
+	}
+
+	@Override
+	public boolean isThumbnailImmediate(int smallestSide) {
+		mThumbnailSmallestSide = smallestSide; // Never refresh thumbnail, there's only one.
+		return super.isThumbnailImmediate(smallestSide);
+	}
+
+	@Override
 	protected Pattern getMatchingPattern() {
 		if(sMatchingPattern == null)
 			sMatchingPattern = Pattern.compile("https?://(?:www\\.)?justin\\.tv/[\\w\\-]+/?", Pattern.CASE_INSENSITIVE);

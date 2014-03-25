@@ -63,10 +63,10 @@ public class MediaParserTest {
         checkThumbnailAndUrlContentType(mediaParser, YfrogParser.class, 75, MediaType.OTHER, "text/html");
 
         mediaParser = MediaParser.getInstance("http://yfrog.com/nvvdfdej");
-        checkThumbnailAndUrlContentType(mediaParser, YfrogParser.class, 150, MediaType.OTHER, "text/html");
+        checkThumbnailAndUrlContentType(mediaParser, YfrogParser.class, 200, MediaType.OTHER, "text/html");
 
         mediaParser = MediaParser.getInstance("http://www.yfrog.com/0ia9mcz");
-        checkThumbnailAndUrlContentType(mediaParser, YfrogParser.class, 90, MediaType.OTHER, "text/html");
+        checkThumbnailAndUrlContentType(mediaParser, YfrogParser.class, 400, MediaType.OTHER, "text/html");
     }
 
 	@Test

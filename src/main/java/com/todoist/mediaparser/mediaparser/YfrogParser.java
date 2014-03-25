@@ -36,7 +36,7 @@ public class YfrogParser extends BaseMediaParserWithId {
 
 	    boolean isImage = true;
 	    try {
-		    URLConnection connection = new URL(String.format(getUrlTemplate(), mId, "iphone")).openConnection();
+		    URLConnection connection = getHttpClient().open(new URL(String.format(getUrlTemplate(), mId, "iphone")));
 		    String contentType = connection.getHeaderField("Content-Type");
 		    isImage = contentType == null || contentType.contains("image/");
 	    } catch(IOException e) {

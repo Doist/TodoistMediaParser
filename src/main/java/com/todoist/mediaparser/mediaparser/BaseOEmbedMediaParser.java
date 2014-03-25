@@ -7,7 +7,6 @@ import com.todoist.mediaparser.MediaParser;
 import com.todoist.mediaparser.util.HttpUtils;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.URL;
 
 /*
@@ -52,8 +51,7 @@ abstract class BaseOEmbedMediaParser extends MediaParser {
 	protected abstract String getOEmbedThumbnailUrlName();
 
 	protected String getOEmbedResponse() throws IOException {
-		URL url = new URL(String.format(getOEmbedUrlTemplate(), mUrl));
-		return HttpUtils.readFrom((HttpURLConnection)url.openConnection());
+		return HttpUtils.readFrom(getHttpClient().open(new URL(String.format(getOEmbedUrlTemplate(), mUrl))));
 	}
 
 	protected String getValueForName(JsonParser jsonParser, String name) throws IOException {

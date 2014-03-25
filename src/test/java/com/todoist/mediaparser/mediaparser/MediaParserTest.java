@@ -1,5 +1,6 @@
 package com.todoist.mediaparser.mediaparser;
 
+import com.squareup.okhttp.OkHttpClient;
 import com.todoist.mediaparser.MediaParser;
 import com.todoist.mediaparser.util.MediaType;
 
@@ -17,6 +18,8 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class MediaParserTest {
+	private OkHttpClient mHttpClient = new OkHttpClient();
+
     @Test
     public void testImglyParsing() throws IOException {
         MediaParser mediaParser = MediaParser.getInstance("http://img.ly/ylsL");
@@ -228,12 +231,10 @@ public class MediaParserTest {
                                                  String expectedContentType) throws IOException {
         assertThat(mediaParser, is(instanceOf(expectedClass)));
 
-	    URL thumbnailUrl = new URL(mediaParser.getThumbnailUrl(thumbnailSize));
-        URLConnection thumbnailConnection = thumbnailUrl.openConnection();
+        URLConnection thumbnailConnection = mHttpClient.open(new URL(mediaParser.getThumbnailUrl(thumbnailSize)));
         assertThat(thumbnailConnection.getHeaderField("Content-Type"), containsString("image/")); // Thumbnails are images.
 
-	    URL contentUrl = new URL(mediaParser.getContentUrl());
-        URLConnection imageConnection = contentUrl.openConnection();
+	    URLConnection imageConnection = mHttpClient.open(new URL(mediaParser.getContentUrl()));
         assertThat(imageConnection.getHeaderField("Content-Type"), containsString(expectedContentType));
 	    assertThat(mediaParser.getContentMediaType(), is(expectedContentMediaType));
     }

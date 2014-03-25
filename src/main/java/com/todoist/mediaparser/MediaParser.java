@@ -1,5 +1,6 @@
 package com.todoist.mediaparser;
 
+import com.squareup.okhttp.OkHttpClient;
 import com.todoist.mediaparser.mediaparser.AudioFileParser;
 import com.todoist.mediaparser.mediaparser.DeviantartParser;
 import com.todoist.mediaparser.mediaparser.FlickrParser;
@@ -23,9 +24,11 @@ import com.todoist.mediaparser.util.MediaType;
 
 import java.lang.reflect.Constructor;
 import java.util.LinkedHashSet;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 public abstract class MediaParser {
+	private static OkHttpClient sHttpClient;
 	private static final LinkedHashSet<Class<? extends MediaParser>> sMediaParsers =
 			new LinkedHashSet<Class<? extends MediaParser>>() {{
 				add(ImglyParser.class);
@@ -90,6 +93,17 @@ public abstract class MediaParser {
 	 */
 	public static boolean unregisterMediaParser(Class<? extends MediaParser> mediaParserClass) {
 		return sMediaParsers.remove(mediaParserClass);
+	}
+
+	/**
+	 * Returns an http client ready for use.
+	 */
+	protected static OkHttpClient getHttpClient() {
+		if(sHttpClient == null) {
+			sHttpClient = new OkHttpClient();
+			sHttpClient.setConnectTimeout(20, TimeUnit.SECONDS);
+		}
+		return sHttpClient;
 	}
 
     protected MediaParser(String url) {

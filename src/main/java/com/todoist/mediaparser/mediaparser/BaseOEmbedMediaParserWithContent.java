@@ -28,14 +28,16 @@ abstract class BaseOEmbedMediaParserWithContent extends BaseOEmbedMediaParser {
 	@Override
 	protected String createContentUrl() {
 		String contentUrl = super.createContentUrl();
-		try {
-			JsonParser jsonParser = JSON_FACTORY.createParser(getOEmbedResponse());
-			contentUrl = getValueForName(jsonParser, getOEmbedContentUrlName());
-			jsonParser.close();
-		} catch(MissingValueForNameException e) {
+		if(mOEmbedResponse != null) { // No oEmbed response yet, but it can't wait.
+			try {
+				JsonParser jsonParser = JSON_FACTORY.createParser(getOEmbedResponse());
+				contentUrl = getValueForName(jsonParser, getOEmbedContentUrlName());
+				jsonParser.close();
+			} catch(MissingValueForNameException e) {
 			/* Ignore. */
-		} catch(IOException e) {
-			e.printStackTrace();
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
 		}
 		return contentUrl;
 	}

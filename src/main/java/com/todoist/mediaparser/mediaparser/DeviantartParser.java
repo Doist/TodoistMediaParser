@@ -6,7 +6,7 @@ import com.todoist.mediaparser.util.MediaType;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-public class DeviantartParser extends BaseOEmbedMediaParserWithContent {
+public class DeviantartParser extends BaseOEmbedMediaParser {
 	private static Pattern sMatchingPattern;
 
 	DeviantartParser(String url) {
@@ -16,6 +16,11 @@ public class DeviantartParser extends BaseOEmbedMediaParserWithContent {
 	@Override
 	public MediaType getContentMediaType() {
 		return MediaType.OTHER;
+	}
+
+	@Override
+	public boolean isContentDirect() {
+		return false;
 	}
 
 	@Override
@@ -42,8 +47,15 @@ public class DeviantartParser extends BaseOEmbedMediaParserWithContent {
 			int thumbnailHeight = Integer.valueOf(getValueForName(jsonParser, "thumbnail_height"));
 			jsonParser.close();
 
-			if(Math.min(thumbnailWidth, thumbnailHeight) < smallestSide)
-				return createContentUrl();
+			if(Math.min(thumbnailWidth, thumbnailHeight) < smallestSide) {
+				jsonParser = JSON_FACTORY.createParser(getOEmbedResponse());
+				String url = getValueForName(jsonParser, "url");
+				jsonParser.close();
+				if(url != null)
+					return url;
+			}
+
+			return super.createThumbnailUrl(smallestSide);
 		} catch(MissingValueForNameException | NumberFormatException e) {
 			/* Ignore. */
 		} catch(IOException e) {
@@ -55,11 +67,6 @@ public class DeviantartParser extends BaseOEmbedMediaParserWithContent {
 	@Override
 	protected String getOEmbedUrlTemplate() {
 		return "http://backend.deviantart.com/oembed?url=%s&format=json";
-	}
-
-	@Override
-	protected String getOEmbedContentUrlName() {
-		return "url";
 	}
 
 	@Override

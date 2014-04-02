@@ -19,6 +19,11 @@ public class VimeoParser extends BaseOEmbedMediaParser {
 	}
 
 	@Override
+	public boolean isContentDirect() {
+		return false;
+	}
+
+	@Override
 	protected Pattern getMatchingPattern() {
 		if(sMatchingPattern == null) {
 			sMatchingPattern = Pattern.compile(

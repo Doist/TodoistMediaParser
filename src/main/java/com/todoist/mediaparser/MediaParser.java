@@ -132,6 +132,11 @@ public abstract class MediaParser {
 	public abstract MediaType getContentMediaType();
 
 	/**
+	 * Returns true if the url points directly to the content, meaning it's not a website but the final file itself.
+	 */
+	public abstract boolean isContentDirect();
+
+	/**
 	 * Returns an image thumbnail for this media. Redirects might need to be followed. The thumbnail smallest side will
 	 * be equal to or larger than {@code smallestSide}, unless it's not available or the size is negative. In those
 	 * cases, the largest possible thumbnail image is returned.

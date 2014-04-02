@@ -18,7 +18,12 @@ abstract class BaseImageMediaParser extends BaseMediaParserWithId {
 		return MediaType.IMAGE;
 	}
 
-    @Override
+	@Override
+	public boolean isContentDirect() {
+		return true;
+	}
+
+	@Override
     public String createThumbnailUrl(int smallestSide) {
 	    Size size = Size.getBestSizeForSmallestSide(getAvailableSizes(), smallestSide);
 	    return String.format(getUrlTemplate(), mId, size.key);

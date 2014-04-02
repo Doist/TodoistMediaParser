@@ -26,6 +26,11 @@ public class YfrogParser extends BaseMediaParserWithId {
 	}
 
 	@Override
+	public boolean isContentDirect() {
+		return false;
+	}
+
+	@Override
 	protected String createContentUrl() {
 		return mUrl;
 	}

@@ -9,6 +9,8 @@ public class FlickrParser extends BaseOEmbedMediaParserWithContent {
 	private static Pattern sMatchingPattern;
 	private static Size[] sAvailableSizes;
 
+	private boolean mContentDirect = false;
+
 	FlickrParser(String url) {
 		super(url);
 	}
@@ -16,6 +18,11 @@ public class FlickrParser extends BaseOEmbedMediaParserWithContent {
 	@Override
 	public MediaType getContentMediaType() {
 		return MediaType.OTHER;
+	}
+
+	@Override
+	public boolean isContentDirect() {
+		return mContentDirect;
 	}
 
 	@Override
@@ -30,11 +37,18 @@ public class FlickrParser extends BaseOEmbedMediaParserWithContent {
 	}
 
 	@Override
+	protected String createContentUrl() {
+		String contentUrl = super.createContentUrl();
+		mContentDirect = !mUrl.equals(contentUrl);
+		return contentUrl;
+	}
+
+	@Override
 	protected String createThumbnailUrl(int smallestSide) {
 		String thumbnailUrl = super.createThumbnailUrl(smallestSide);
 		Size size = Size.getSizeForSmallestSide(getAvailableSizes(), smallestSide);
 		if(size != null) {
-			return thumbnailUrl.replaceFirst("_[sqtmnzcbo]\\.([jpg|gif|png])$", "_" + size.key + ".$1");
+			return thumbnailUrl.replaceFirst("_[sqtmnzcbo]\\.((?:jpg)|(?:gif)|(?:png))$", "_" + size.key + ".$1");
 		}
 		else {
 			// No thumbnail or none is large enough. Use content if it's a direct link.

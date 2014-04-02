@@ -17,6 +17,11 @@ public class RdioParser extends BaseOEmbedMediaParser {
 	}
 
 	@Override
+	public boolean isContentDirect() {
+		return false;
+	}
+
+	@Override
 	public String getThumbnailUrl(int smallestSide) {
 		mThumbnailSmallestSide = smallestSide; // Never refresh thumbnail, there's only one.
 		return super.getThumbnailUrl(smallestSide);

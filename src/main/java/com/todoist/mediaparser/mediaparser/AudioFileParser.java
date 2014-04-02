@@ -23,7 +23,12 @@ public class AudioFileParser extends MediaParser {
 		return MediaType.AUDIO;
 	}
 
-    @Override
+	@Override
+	public boolean isContentDirect() {
+		return true;
+	}
+
+	@Override
     protected boolean matches() {
         for(String extension : EXTENSIONS) {
 	        if(StringUtils.endsWithIgnoreCase(mUrl, extension))

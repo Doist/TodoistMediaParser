@@ -17,6 +17,11 @@ public class ScreenrParser extends BaseOEmbedMediaParser {
 	}
 
 	@Override
+	public boolean isContentDirect() {
+		return false;
+	}
+
+	@Override
 	protected Pattern getMatchingPattern() {
 		if(sMatchingPattern == null)
 			sMatchingPattern = Pattern.compile("https?://(?:www\\.)?screenr\\.com/\\w+/?", Pattern.CASE_INSENSITIVE);

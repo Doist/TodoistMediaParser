@@ -22,7 +22,12 @@ public class VideoFileParser extends MediaParser {
 		return MediaType.VIDEO;
 	}
 
-    @Override
+	@Override
+	public boolean isContentDirect() {
+		return true;
+	}
+
+	@Override
     protected boolean matches() {
         for(String extension : EXTENSIONS) {
 	        if(endsWithIgnoreCase(mUrl, extension))

@@ -1,7 +1,7 @@
 package com.todoist.mediaparser.mediaparser;
 
 import com.todoist.mediaparser.MediaParser;
-import com.todoist.mediaparser.util.MediaType;
+import com.todoist.mediaparser.util.Type;
 import com.todoist.mediaparser.util.StringUtils;
 
 import java.util.regex.Pattern;
@@ -19,8 +19,8 @@ public class AudioFileParser extends MediaParser {
 	}
 
 	@Override
-	public MediaType getContentMediaType() {
-		return MediaType.AUDIO;
+	public Type getContentType() {
+		return Type.AUDIO;
 	}
 
 	@Override

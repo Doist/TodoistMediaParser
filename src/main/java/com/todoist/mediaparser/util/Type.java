@@ -2,7 +2,7 @@ package com.todoist.mediaparser.util;
 
 import com.todoist.mediaparser.MediaParser;
 
-public enum MediaType {
+public enum Type {
     /**
      * {@link MediaParser#getContentUrl()} is an image.
      */

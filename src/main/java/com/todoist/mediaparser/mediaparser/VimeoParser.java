@@ -1,6 +1,6 @@
 package com.todoist.mediaparser.mediaparser;
 
-import com.todoist.mediaparser.util.MediaType;
+import com.todoist.mediaparser.util.Type;
 import com.todoist.mediaparser.util.Size;
 
 import java.util.regex.Pattern;
@@ -14,8 +14,8 @@ public class VimeoParser extends BaseOEmbedMediaParser {
 	}
 
 	@Override
-	public MediaType getContentMediaType() {
-		return MediaType.VIDEO;
+	public Type getContentType() {
+		return Type.VIDEO;
 	}
 
 	@Override

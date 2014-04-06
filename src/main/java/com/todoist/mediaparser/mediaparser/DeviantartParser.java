@@ -1,7 +1,7 @@
 package com.todoist.mediaparser.mediaparser;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.todoist.mediaparser.util.MediaType;
+import com.todoist.mediaparser.util.Type;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
@@ -14,8 +14,8 @@ public class DeviantartParser extends BaseOEmbedMediaParser {
 	}
 
 	@Override
-	public MediaType getContentMediaType() {
-		return MediaType.OTHER;
+	public Type getContentType() {
+		return Type.OTHER;
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package com.todoist.mediaparser.mediaparser;
 
-import com.todoist.mediaparser.util.MediaType;
+import com.todoist.mediaparser.util.Type;
 import com.todoist.mediaparser.util.Size;
 
 abstract class BaseImageMediaParser extends BaseMediaParserWithId {
@@ -14,8 +14,8 @@ abstract class BaseImageMediaParser extends BaseMediaParserWithId {
 	}
 
 	@Override
-	public MediaType getContentMediaType() {
-		return MediaType.IMAGE;
+	public Type getContentType() {
+		return Type.IMAGE;
 	}
 
 	@Override

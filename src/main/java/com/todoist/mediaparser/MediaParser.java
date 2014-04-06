@@ -20,7 +20,7 @@ import com.todoist.mediaparser.mediaparser.VideoFileParser;
 import com.todoist.mediaparser.mediaparser.VimeoParser;
 import com.todoist.mediaparser.mediaparser.YfrogParser;
 import com.todoist.mediaparser.mediaparser.YoutubeParser;
-import com.todoist.mediaparser.util.MediaType;
+import com.todoist.mediaparser.util.Type;
 
 import java.lang.reflect.Constructor;
 import java.util.LinkedHashSet;
@@ -129,7 +129,7 @@ public abstract class MediaParser {
 	/**
 	 * Returns the media type of the content.
 	 */
-	public abstract MediaType getContentMediaType();
+	public abstract Type getContentType();
 
 	/**
 	 * Returns true if the url points directly to the content, meaning it's not a website but the final file itself.

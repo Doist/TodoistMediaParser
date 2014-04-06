@@ -1,6 +1,6 @@
 package com.todoist.mediaparser.mediaparser;
 
-import com.todoist.mediaparser.util.MediaType;
+import com.todoist.mediaparser.util.Type;
 import com.todoist.mediaparser.util.Size;
 
 import java.io.IOException;
@@ -21,8 +21,8 @@ public class YfrogParser extends BaseMediaParserWithId {
     }
 
 	@Override
-	public MediaType getContentMediaType() {
-		return MediaType.OTHER; // Can be IMAGE or VIDEO.
+	public Type getContentType() {
+		return Type.OTHER; // Can be IMAGE or VIDEO.
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package com.todoist.mediaparser.mediaparser;
 
 import com.todoist.mediaparser.MediaParser;
-import com.todoist.mediaparser.util.MediaType;
+import com.todoist.mediaparser.util.Type;
 
 import java.util.regex.Pattern;
 
@@ -18,8 +18,8 @@ public class VideoFileParser extends MediaParser {
 	}
 
 	@Override
-	public MediaType getContentMediaType() {
-		return MediaType.VIDEO;
+	public Type getContentType() {
+		return Type.VIDEO;
 	}
 
 	@Override

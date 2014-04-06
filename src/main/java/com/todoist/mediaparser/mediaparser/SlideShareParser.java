@@ -1,7 +1,7 @@
 package com.todoist.mediaparser.mediaparser;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.todoist.mediaparser.util.MediaType;
+import com.todoist.mediaparser.util.Type;
 import com.todoist.mediaparser.util.Size;
 
 import java.io.IOException;
@@ -16,8 +16,8 @@ public class SlideShareParser extends BaseOEmbedMediaParser {
 	}
 
 	@Override
-	public MediaType getContentMediaType() {
-		return MediaType.OTHER;
+	public Type getContentType() {
+		return Type.OTHER;
 	}
 
 	@Override

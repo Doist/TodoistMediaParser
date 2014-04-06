@@ -1,6 +1,6 @@
 package com.todoist.mediaparser.mediaparser;
 
-import com.todoist.mediaparser.util.MediaType;
+import com.todoist.mediaparser.util.Type;
 
 import java.util.regex.Pattern;
 
@@ -15,8 +15,8 @@ public class SpotifyParser extends BaseOEmbedMediaParser {
 	}
 
 	@Override
-	public MediaType getContentMediaType() {
-		return MediaType.AUDIO;
+	public Type getContentType() {
+		return Type.AUDIO;
 	}
 
 	@Override

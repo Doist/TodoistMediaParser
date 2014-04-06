@@ -1,74 +1,65 @@
 package com.todoist.mediaparser;
 
-import com.squareup.okhttp.OkHttpClient;
-import com.todoist.mediaparser.mediaparser.AudioFileParser;
-import com.todoist.mediaparser.mediaparser.DeviantartParser;
-import com.todoist.mediaparser.mediaparser.FlickrParser;
-import com.todoist.mediaparser.mediaparser.HuluParser;
-import com.todoist.mediaparser.mediaparser.ImageFileParser;
-import com.todoist.mediaparser.mediaparser.ImglyParser;
-import com.todoist.mediaparser.mediaparser.InstagramParser;
-import com.todoist.mediaparser.mediaparser.JustinTvParser;
-import com.todoist.mediaparser.mediaparser.RdioParser;
-import com.todoist.mediaparser.mediaparser.ScreenrParser;
-import com.todoist.mediaparser.mediaparser.SlideShareParser;
-import com.todoist.mediaparser.mediaparser.SoundCloudParser;
-import com.todoist.mediaparser.mediaparser.SpotifyParser;
-import com.todoist.mediaparser.mediaparser.TedParser;
-import com.todoist.mediaparser.mediaparser.TwitpicParser;
-import com.todoist.mediaparser.mediaparser.VideoFileParser;
-import com.todoist.mediaparser.mediaparser.VimeoParser;
-import com.todoist.mediaparser.mediaparser.YfrogParser;
-import com.todoist.mediaparser.mediaparser.YoutubeParser;
-import com.todoist.mediaparser.util.Type;
+import com.todoist.mediaparser.mediaentity.AudioFileEntity;
+import com.todoist.mediaparser.mediaentity.DeviantartEntity;
+import com.todoist.mediaparser.mediaentity.FlickrEntity;
+import com.todoist.mediaparser.mediaentity.HuluEntity;
+import com.todoist.mediaparser.mediaentity.ImageFileEntity;
+import com.todoist.mediaparser.mediaentity.ImglyEntity;
+import com.todoist.mediaparser.mediaentity.InstagramEntity;
+import com.todoist.mediaparser.mediaentity.JustinTvEntity;
+import com.todoist.mediaparser.mediaentity.MediaEntity;
+import com.todoist.mediaparser.mediaentity.RdioEntity;
+import com.todoist.mediaparser.mediaentity.ScreenrEntity;
+import com.todoist.mediaparser.mediaentity.SlideShareEntity;
+import com.todoist.mediaparser.mediaentity.SoundCloudEntity;
+import com.todoist.mediaparser.mediaentity.SpotifyEntity;
+import com.todoist.mediaparser.mediaentity.TedEntity;
+import com.todoist.mediaparser.mediaentity.TwitpicEntity;
+import com.todoist.mediaparser.mediaentity.VideoFileEntity;
+import com.todoist.mediaparser.mediaentity.VimeoEntity;
+import com.todoist.mediaparser.mediaentity.YfrogEntity;
+import com.todoist.mediaparser.mediaentity.YoutubeEntity;
 
 import java.lang.reflect.Constructor;
 import java.util.LinkedHashSet;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
 
 public abstract class MediaParser {
-	private static OkHttpClient sHttpClient;
-	private static final LinkedHashSet<Class<? extends MediaParser>> sMediaParsers =
-			new LinkedHashSet<Class<? extends MediaParser>>() {{
-				add(ImglyParser.class);
-				add(InstagramParser.class);
-				add(TwitpicParser.class);
-				add(FlickrParser.class);
-				add(YfrogParser.class);
-				add(DeviantartParser.class);
-				add(ImageFileParser.class);
-				add(YoutubeParser.class);
-				add(VimeoParser.class);
-				add(HuluParser.class);
-				add(JustinTvParser.class);
-				add(ScreenrParser.class);
-				add(TedParser.class);
-				add(VideoFileParser.class);
-				add(RdioParser.class);
-				add(SpotifyParser.class);
-				add(SoundCloudParser.class);
-				add(AudioFileParser.class);
-				add(SlideShareParser.class);
+	private static final LinkedHashSet<Class<? extends com.todoist.mediaparser.mediaentity.MediaEntity>> sMediaParsers =
+			new LinkedHashSet<Class<? extends MediaEntity>>() {{
+				add(ImglyEntity.class);
+				add(InstagramEntity.class);
+				add(TwitpicEntity.class);
+				add(FlickrEntity.class);
+				add(YfrogEntity.class);
+				add(DeviantartEntity.class);
+				add(ImageFileEntity.class);
+				add(YoutubeEntity.class);
+				add(VimeoEntity.class);
+				add(HuluEntity.class);
+				add(JustinTvEntity.class);
+				add(ScreenrEntity.class);
+				add(TedEntity.class);
+				add(VideoFileEntity.class);
+				add(RdioEntity.class);
+				add(SpotifyEntity.class);
+				add(SoundCloudEntity.class);
+				add(AudioFileEntity.class);
+				add(SlideShareEntity.class);
 			}};
 
-	protected String mUrl;
-    protected String mContentUrl;
-	protected String mThumbnailUrl;
-	protected int mThumbnailSmallestSide;
-
     /**
-     * Returns an appropriate {@link MediaParser} instance for this {@code url}, or {code null} if not supported.
+     * Returns an appropriate {@link MediaEntity} instance for this {@code url}, or {code null} if not supported.
      */
-    public static MediaParser getInstance(String url) {
-        for(Class<? extends MediaParser> mediaParserClass : sMediaParsers) {
+    public static MediaEntity getInstance(String url) {
+        for(Class<? extends MediaEntity> mediaParserClass : sMediaParsers) {
             try {
-	            Constructor<? extends MediaParser> mediaParserConstructor =
+	            Constructor<? extends MediaEntity> mediaParserConstructor =
 			            mediaParserClass.getDeclaredConstructor(String.class);
 	            mediaParserConstructor.setAccessible(true);
-	            MediaParser mediaParser = mediaParserConstructor.newInstance(url);
-	            if(mediaParser.matches())
-		            return mediaParser;
+	            MediaEntity mediaEntity = mediaParserConstructor.newInstance(url);
+	            if(mediaEntity.matches())
+		            return mediaEntity;
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -77,108 +68,21 @@ public abstract class MediaParser {
     }
 
 	/**
-	 * Registers a {@link MediaParser} subclass. It will be checked when {@link #getInstance(String)} is invoked.
+	 * Registers a {@link MediaEntity} subclass. It will be checked when {@link #getInstance(String)} is invoked.
 	 *
 	 * @return true if it was registered, false if it was already registered.
 	 */
-	public static boolean registerMediaParser(Class<? extends MediaParser> mediaParserClass) {
+	public static boolean registerMediaParser(Class<? extends MediaEntity> mediaParserClass) {
 		return sMediaParsers.add(mediaParserClass);
 	}
 
 	/**
-	 * Unregisters a {@link MediaParser} subclass. It will no longer be checked when {@link #getInstance(String)} is
+	 * Unregisters a {@link MediaEntity} subclass. It will no longer be checked when {@link #getInstance(String)} is
 	 * invoked.
 	 *
 	 * @return true if it was removed, false if it was not registered.
 	 */
-	public static boolean unregisterMediaParser(Class<? extends MediaParser> mediaParserClass) {
+	public static boolean unregisterMediaParser(Class<? extends MediaEntity> mediaParserClass) {
 		return sMediaParsers.remove(mediaParserClass);
 	}
-
-	/**
-	 * Returns an http client ready for use.
-	 */
-	protected static OkHttpClient getHttpClient() {
-		if(sHttpClient == null) {
-			sHttpClient = new OkHttpClient();
-			sHttpClient.setConnectTimeout(20, TimeUnit.SECONDS);
-		}
-		return sHttpClient;
-	}
-
-    protected MediaParser(String url) {
-        mUrl = url;
-    }
-
-	/**
-	 * Returns the original url.
-	 */
-	public final String getUrl() {
-		return mUrl;
-	}
-
-	/**
-	 * Returns the url for this media. Redirects might need to be followed.
-	 */
-	public String getContentUrl() {
-		if(mContentUrl == null)
-			mContentUrl = createContentUrl();
-		return mContentUrl;
-	}
-
-	/**
-	 * Returns the media type of the content.
-	 */
-	public abstract Type getContentType();
-
-	/**
-	 * Returns true if the url points directly to the content, meaning it's not a website but the final file itself.
-	 */
-	public abstract boolean isContentDirect();
-
-	/**
-	 * Returns an image thumbnail for this media. Redirects might need to be followed. The thumbnail smallest side will
-	 * be equal to or larger than {@code smallestSide}, unless it's not available or the size is negative. In those
-	 * cases, the largest possible thumbnail image is returned.
-	 *
-	 * This is not guaranteed to be fast, thus should be called from a background thread. Can be null.
-	 */
-	public String getThumbnailUrl(int smallestSide) {
-		if(mThumbnailUrl == null || mThumbnailSmallestSide != smallestSide) {
-			mThumbnailUrl = createThumbnailUrl(smallestSide);
-			mThumbnailSmallestSide = smallestSide;
-		}
-		return mThumbnailUrl;
-	}
-
-	/**
-	 * Returns true if this parser is able to get a thumbnail immediately, false if not.
-	 */
-	public boolean isThumbnailImmediate(int smallestSide) {
-		return mThumbnailUrl != null && mThumbnailSmallestSide == smallestSide;
-	}
-
-	/**
-	 * Returns true if this parser is appropriate for {@code mUrl}, or false if not.
-	 */
-	protected boolean matches() {
-		return getMatchingPattern().matcher(mUrl).lookingAt();
-	}
-
-	/**
-	 * Returns a pattern that matches valid urls. Used by {@link #matches()}.
-	 */
-	protected abstract Pattern getMatchingPattern();
-
-	/**
-	 * Returns a thumbnail url, or null if one isn't found.
-	 * @see #getThumbnailUrl(int).
-	 */
-    protected abstract String createThumbnailUrl(int smallestSide);
-
-	/**
-	 * Returns the url for the content.
-	 * @see #getContentUrl().
-	 */
-	protected abstract String createContentUrl();
 }

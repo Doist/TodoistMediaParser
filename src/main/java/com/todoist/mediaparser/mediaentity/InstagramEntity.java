@@ -1,4 +1,4 @@
-package com.todoist.mediaparser.mediaparser;
+package com.todoist.mediaparser.mediaentity;
 
 import com.todoist.mediaparser.util.Size;
 
@@ -7,11 +7,11 @@ import java.util.regex.Pattern;
 /*
  * See: http://instagram.com/developer/embedding
  */
-public class InstagramParser extends BaseImageMediaParser {
+public class InstagramEntity extends BaseImageMediaEntity {
 	private static Pattern sIdPattern;
 	private static Size[] sSizes;
 
-	InstagramParser(String url) {
+	InstagramEntity(String url) {
 		super(url);
 	}
 

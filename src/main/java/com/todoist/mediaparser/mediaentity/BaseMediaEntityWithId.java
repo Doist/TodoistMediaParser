@@ -1,14 +1,12 @@
-package com.todoist.mediaparser.mediaparser;
-
-import com.todoist.mediaparser.MediaParser;
+package com.todoist.mediaparser.mediaentity;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-abstract class BaseMediaParserWithId extends MediaParser {
+abstract class BaseMediaEntityWithId extends MediaEntity {
     protected String mId;
 
-    BaseMediaParserWithId(String url) {
+    BaseMediaEntityWithId(String url) {
         super(url);
     }
 
@@ -16,14 +14,16 @@ abstract class BaseMediaParserWithId extends MediaParser {
      * Returns true if the {@link Pattern} created using {@link #getIdPattern()} finds {@link #mId} in {@link #mUrl}.
      */
     @Override
-    protected boolean matches() {
-        Matcher matcher = getIdPattern().matcher(mUrl);
-        if(matcher.lookingAt()) {
-            mId = matcher.group(1);
-	        return true;
-        }
-        return false;
+    public boolean matches() {
+        return getIdPattern().matcher(mUrl).lookingAt();
     }
+
+	@Override
+	protected void doConfigure() throws Exception {
+		Matcher matcher = getIdPattern().matcher(mUrl);
+		if(matcher.lookingAt())
+			mId = matcher.group(1);
+	}
 
 	@Override
 	protected Pattern getMatchingPattern() {

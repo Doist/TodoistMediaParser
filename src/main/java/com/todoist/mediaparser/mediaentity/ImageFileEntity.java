@@ -1,5 +1,7 @@
 package com.todoist.mediaparser.mediaentity;
 
+import com.todoist.mediaparser.util.StringUtils;
+
 import java.util.regex.Pattern;
 
 public class ImageFileEntity extends MediaEntity {
@@ -12,7 +14,7 @@ public class ImageFileEntity extends MediaEntity {
 	@Override
 	public boolean matches() {
         for(String extension : EXTENSIONS) {
-	        if(endsWithIgnoreCase(mUrl, extension))
+	        if(StringUtils.endsWithIgnoreCase(mUrl, extension))
 		        return true;
         }
         return false;
@@ -38,8 +40,4 @@ public class ImageFileEntity extends MediaEntity {
 		mContentUrl = mUrl;
 		mContentType = mUnderlyingContentType = "image/*";
 	}
-
-	private boolean endsWithIgnoreCase(String str, String suffix) {
-        return str.regionMatches(true, str.length() - suffix.length(), suffix, 0, suffix.length());
-    }
 }

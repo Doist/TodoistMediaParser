@@ -5,14 +5,19 @@ import com.squareup.okhttp.OkHttpClient;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
+/**
+ * Holds various information about the associated media. It needs to be configured through a call to
+ * {@link #configure()}, which can be a blocking call depending on {@link #isConfigurationBlocking()}.
+ * No information is available before this is called, except {@link #getUrl()}.
+ */
 public abstract class MediaEntity {
 	private static OkHttpClient sHttpClient;
 
-	String mUrl;
-	boolean mConfigured;
-	String mContentUrl;
-	String mContentType;
-	String mUnderlyingContentType;
+	protected String mUrl;
+	protected boolean mConfigured;
+	protected String mContentUrl;
+	protected String mContentType;
+	protected String mUnderlyingContentType;
 
 	/**
 	 * Returns an http client ready for use.

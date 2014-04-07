@@ -1,6 +1,7 @@
 package com.todoist.mediaparser.mediaentity;
 
 import com.todoist.mediaparser.util.HttpStack;
+import com.todoist.mediaparser.util.SimpleHttpStack;
 
 import net.minidev.json.JSONObject;
 import net.minidev.json.JSONValue;
@@ -34,13 +35,14 @@ abstract class BaseOEmbedMediaEntity extends MediaEntity {
 	@Override
 	protected void doConfigure(HttpStack httpStack) throws IOException {
 		// Ensure there's an HTTP stack.
-		httpStack = httpStack != null ? httpStack : getDefaultHttpStack();
+		httpStack = httpStack != null ? httpStack : new SimpleHttpStack();
 
 		try {
 			// Get oEmbed data.
 			String oEmbedResponse = httpStack.getResponse(String.format(getOEmbedUrlTemplate(), mUrl));
 			if(oEmbedResponse != null) {
 				JSONObject oEmbedData = (JSONObject)JSONValue.parse(oEmbedResponse);
+
 				// Gather available info, depending on the type.
 				String type = (String)oEmbedData.get("type");
 

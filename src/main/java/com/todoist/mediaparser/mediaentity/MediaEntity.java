@@ -2,13 +2,6 @@ package com.todoist.mediaparser.mediaentity;
 
 import com.todoist.mediaparser.util.HttpStack;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -108,45 +101,10 @@ public abstract class MediaEntity {
 	 * Perform the setup. {@code #mContentUrl}, {@code #mContentType} and {@code #mUnderlyingContentType} should all
 	 * be set.
 	 *
-	 * The passed-in {@code httpStack} can be null. If so, and it's needed, use {@link #getDefaultHttpStack()}.
+	 * The passed-in {@code httpStack} can be null. If so, and it's needed, use
+	 * {@link com.todoist.mediaparser.util.SimpleHttpStack}.
 	 */
 	protected abstract void doConfigure(HttpStack httpStack) throws Exception;
-
-	/**
-	 * Returns a default http stack ready for use.
-	 */
-	protected static HttpStack getDefaultHttpStack() {
-		return new HttpStack() {
-			@Override
-			public String getResponse(String url) throws IOException {
-				URLConnection connection = new URL(url).openConnection();
-				InputStream in = null;
-				try {
-					in = connection.getInputStream();
-					StringBuilder builder = new StringBuilder();
-					byte[] buffer = new byte[2048];
-					for(int byteCount; (byteCount = in.read(buffer)) != -1; )
-						builder.append(new String(buffer, 0, byteCount, "UTF-8"));
-					return builder.toString();
-				} finally {
-					if(in != null)
-						in.close();
-				}
-			}
-
-			@Override
-			public Map<String, String> getHeaders(String url) throws IOException {
-				URLConnection connection = new URL(url).openConnection();
-				Map<String, List<String>> connectionHeaders = connection.getHeaderFields();
-				Map<String, String> headers = new HashMap<String, String>(connectionHeaders.size());
-				for(String key : connectionHeaders.keySet()) {
-					List<String> values = connectionHeaders.get(key);
-					headers.put(key, values.get(values.size() - 1)); // Use last entry.
-				}
-				return headers;
-			}
-		};
-	}
 
 	private void ensureConfigured() {
 		if(!mConfigured) throw new IllegalStateException("configure() was never called");

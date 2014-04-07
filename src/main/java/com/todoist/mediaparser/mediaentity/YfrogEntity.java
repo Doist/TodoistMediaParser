@@ -1,6 +1,7 @@
 package com.todoist.mediaparser.mediaentity;
 
 import com.todoist.mediaparser.util.HttpStack;
+import com.todoist.mediaparser.util.SimpleHttpStack;
 import com.todoist.mediaparser.util.Size;
 
 import java.util.Map;
@@ -47,7 +48,7 @@ public class YfrogEntity extends BaseMediaEntityWithId {
 		super.doConfigure(httpStack);
 
 		// Ensure there's an HTTP stack.
-		httpStack = httpStack != null ? httpStack : getDefaultHttpStack();
+		httpStack = httpStack != null ? httpStack : new SimpleHttpStack();
 
 		// Determine content type using the response headers.
 		Map<String, String> headers = httpStack.getHeaders(String.format(getUrlTemplate(), mId, "iphone"));

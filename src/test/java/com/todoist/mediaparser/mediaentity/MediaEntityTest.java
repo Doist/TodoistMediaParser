@@ -2,6 +2,7 @@ package com.todoist.mediaparser.mediaentity;
 
 import com.todoist.mediaparser.MediaParser;
 import com.todoist.mediaparser.util.HttpStack;
+import com.todoist.mediaparser.util.SimpleHttpStack;
 
 import org.junit.Test;
 
@@ -16,7 +17,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class MediaEntityTest {
-	private HttpStack mHttpStack = MediaEntity.getDefaultHttpStack();
+	private HttpStack mHttpStack = new SimpleHttpStack();
 
 	@Test
 	public void testImglyParsing() throws IOException {

@@ -1,34 +1,27 @@
 package com.todoist.mediaparser.mediaentity;
 
-import com.squareup.okhttp.OkHttpClient;
+import com.todoist.mediaparser.util.HttpStack;
 
-import java.util.concurrent.TimeUnit;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
  * Holds various information about the associated media. It needs to be configured through a call to
- * {@link #configure()}, which can be a blocking call depending on {@link #isConfigurationBlocking()}.
+ * {@link #configure(HttpStack)}, which can be a blocking call depending on {@link #isConfigurationBlocking()}.
  * No information is available before this is called, except {@link #getUrl()}.
  */
 public abstract class MediaEntity {
-	private static OkHttpClient sHttpClient;
-
 	protected String mUrl;
 	protected boolean mConfigured;
 	protected String mContentUrl;
 	protected String mContentType;
 	protected String mUnderlyingContentType;
-
-	/**
-	 * Returns an http client ready for use.
-	 */
-	protected static OkHttpClient getHttpClient() {
-		if(sHttpClient == null) {
-			sHttpClient = new OkHttpClient();
-			sHttpClient.setConnectTimeout(20, TimeUnit.SECONDS);
-		}
-		return sHttpClient;
-	}
 
 	protected MediaEntity(String url) {
 		mUrl = url;
@@ -42,12 +35,16 @@ public abstract class MediaEntity {
 	}
 
 	/**
-	 * Configure this media entity. Automatically called for non-blocking implementations. Check {@link #isConfigured()}.
+	 * Configure this media entity.
+	 *
+	 * @param httpStack the HTTP stack to use, falls back to the default one if {@code null}.
+	 * @see #isConfigured()
+	 * @see #isConfigurationBlocking()
 	 */
-	public synchronized void configure() {
+	public synchronized void configure(HttpStack httpStack) {
 		if(!mConfigured) {
 			try {
-				doConfigure();
+				doConfigure(httpStack);
 				mConfigured = true;
 			} catch(Exception e) {
 				e.printStackTrace();
@@ -111,10 +108,45 @@ public abstract class MediaEntity {
 	 * Perform the setup. {@code #mContentUrl}, {@code #mContentType} and {@code #mUnderlyingContentType} should all
 	 * be set.
 	 *
-	 * If the subclass implementation is non-blocking, call {@link #configure()} ()} during construction. This ensures
-	 * it won't be treated as a blocking call.
+	 * The passed-in {@code httpStack} can be null. If so, and it's needed, use {@link #getDefaultHttpStack()}.
 	 */
-	protected abstract void doConfigure() throws Exception;
+	protected abstract void doConfigure(HttpStack httpStack) throws Exception;
+
+	/**
+	 * Returns a default http stack ready for use.
+	 */
+	protected static HttpStack getDefaultHttpStack() {
+		return new HttpStack() {
+			@Override
+			public String getResponse(String url) throws IOException {
+				URLConnection connection = new URL(url).openConnection();
+				InputStream in = null;
+				try {
+					in = connection.getInputStream();
+					StringBuilder builder = new StringBuilder();
+					byte[] buffer = new byte[2048];
+					for(int byteCount; (byteCount = in.read(buffer)) != -1; )
+						builder.append(new String(buffer, 0, byteCount, "UTF-8"));
+					return builder.toString();
+				} finally {
+					if(in != null)
+						in.close();
+				}
+			}
+
+			@Override
+			public Map<String, String> getHeaders(String url) throws IOException {
+				URLConnection connection = new URL(url).openConnection();
+				Map<String, List<String>> connectionHeaders = connection.getHeaderFields();
+				Map<String, String> headers = new HashMap<String, String>(connectionHeaders.size());
+				for(String key : connectionHeaders.keySet()) {
+					List<String> values = connectionHeaders.get(key);
+					headers.put(key, values.get(values.size() - 1)); // Use last entry.
+				}
+				return headers;
+			}
+		};
+	}
 
 	private void ensureConfigured() {
 		if(!mConfigured) throw new IllegalStateException("configure() was never called");

@@ -1,9 +1,9 @@
 package com.todoist.mediaparser.mediaentity;
 
+import com.todoist.mediaparser.util.HttpStack;
 import com.todoist.mediaparser.util.Size;
 
-import java.net.URL;
-import java.net.URLConnection;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /*
@@ -43,11 +43,15 @@ public class YfrogEntity extends BaseMediaEntityWithId {
 	}
 
 	@Override
-	protected void doConfigure() throws Exception {
-		super.doConfigure();
+	protected void doConfigure(HttpStack httpStack) throws Exception {
+		super.doConfigure(httpStack);
 
-		URLConnection connection = getHttpClient().open(new URL(String.format(getUrlTemplate(), mId, "iphone")));
-		String contentType = connection.getHeaderField("Content-Type");
+		// Ensure there's an HTTP stack.
+		httpStack = httpStack != null ? httpStack : getDefaultHttpStack();
+
+		// Determine content type using the response headers.
+		Map<String, String> headers = httpStack.getHeaders(String.format(getUrlTemplate(), mId, "iphone"));
+		String contentType = headers.get("Content-Type");
 		boolean isImage = contentType == null || contentType.contains("image/");
 
 		mContentUrl = mUrl;

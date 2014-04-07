@@ -1,5 +1,6 @@
 package com.todoist.mediaparser.mediaentity;
 
+import com.todoist.mediaparser.util.HttpStack;
 import com.todoist.mediaparser.util.Size;
 
 abstract class BaseImageMediaEntity extends BaseMediaEntityWithId {
@@ -31,8 +32,8 @@ abstract class BaseImageMediaEntity extends BaseMediaEntityWithId {
 	}
 
 	@Override
-	protected void doConfigure() throws Exception {
-		super.doConfigure();
+	protected void doConfigure(HttpStack httpStack) throws Exception {
+		super.doConfigure(httpStack);
 
 		Size[] availableSizes = getAvailableSizes();
 		mContentUrl = String.format(getUrlTemplate(), mId, availableSizes[availableSizes.length - 1].key);

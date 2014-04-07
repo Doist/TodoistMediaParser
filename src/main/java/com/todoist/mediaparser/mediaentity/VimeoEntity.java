@@ -1,5 +1,6 @@
 package com.todoist.mediaparser.mediaentity;
 
+import com.todoist.mediaparser.util.HttpStack;
 import com.todoist.mediaparser.util.Size;
 
 import java.io.IOException;
@@ -14,8 +15,8 @@ public class VimeoEntity extends BaseOEmbedMediaEntity {
 	}
 
 	@Override
-	protected void doConfigure() throws IOException {
-		super.doConfigure();
+	protected void doConfigure(HttpStack httpStack) throws IOException {
+		super.doConfigure(httpStack);
 
 		if("text/html".equals(mUnderlyingContentType))
 			mUnderlyingContentType = "video/*";

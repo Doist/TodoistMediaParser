@@ -1,5 +1,6 @@
 package com.todoist.mediaparser.mediaentity;
 
+import com.todoist.mediaparser.util.HttpStack;
 import com.todoist.mediaparser.util.StringUtils;
 
 import java.util.regex.Pattern;
@@ -36,7 +37,7 @@ public class VideoFileEntity extends MediaEntity {
 	}
 
 	@Override
-	protected void doConfigure() {
+	protected void doConfigure(HttpStack httpStack) {
 		mContentUrl = mUrl;
 		mContentType = mUnderlyingContentType = "video/*";
 	}

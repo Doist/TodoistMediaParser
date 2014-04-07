@@ -1,5 +1,7 @@
 package com.todoist.mediaparser.mediaentity;
 
+import com.todoist.mediaparser.util.HttpStack;
+
 import java.io.IOException;
 import java.util.regex.Pattern;
 
@@ -11,8 +13,8 @@ public class SoundCloudEntity extends BaseOEmbedMediaEntity {
 	}
 
 	@Override
-	protected void doConfigure() throws IOException {
-		super.doConfigure();
+	protected void doConfigure(HttpStack httpStack) throws IOException {
+		super.doConfigure(httpStack);
 
 		if("text/html".equals(mUnderlyingContentType))
 			mUnderlyingContentType = "audio/*";

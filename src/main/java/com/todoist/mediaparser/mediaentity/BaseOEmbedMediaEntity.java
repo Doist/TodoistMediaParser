@@ -1,19 +1,16 @@
 package com.todoist.mediaparser.mediaentity;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-import com.todoist.mediaparser.util.HttpUtils;
+import com.todoist.mediaparser.util.HttpStack;
+
+import net.minidev.json.JSONObject;
+import net.minidev.json.JSONValue;
 
 import java.io.IOException;
-import java.net.URL;
 
 /*
  * See: http://oembed.com/
  */
 abstract class BaseOEmbedMediaEntity extends MediaEntity {
-	protected static final JsonFactory JSON_FACTORY = new JsonFactory();
-
 	protected String mThumbnailUrl;
 	protected int mThumbnailSmallestSide = Integer.MAX_VALUE;
 
@@ -35,47 +32,34 @@ abstract class BaseOEmbedMediaEntity extends MediaEntity {
 	}
 
 	@Override
-	protected void doConfigure() throws IOException {
-		// Get oEmbed data.
-		String oEmbedResponse =
-				HttpUtils.readFrom(getHttpClient().open(new URL(String.format(getOEmbedUrlTemplate(), mUrl))));
-		JsonParser jsonParser;
+	protected void doConfigure(HttpStack httpStack) throws IOException {
+		// Ensure there's an HTTP stack.
+		httpStack = httpStack != null ? httpStack : getDefaultHttpStack();
 
 		try {
-			// Gather available info, depending on the type.
-			String oEmbedType = null;
-			try {
-				jsonParser = JSON_FACTORY.createParser(oEmbedResponse);
-				oEmbedType = getValueForName(jsonParser, "type");
-				jsonParser.close();
-			} catch(MissingValueForNameException e) { /* Ignore */ }
+			// Get oEmbed data.
+			String oEmbedResponse = httpStack.getResponse(String.format(getOEmbedUrlTemplate(), mUrl));
+			if(oEmbedResponse != null) {
+				JSONObject oEmbedData = (JSONObject)JSONValue.parse(oEmbedResponse);
+				// Gather available info, depending on the type.
+				String type = (String)oEmbedData.get("type");
 
-			if("photo".equals(oEmbedType)) {
-				try {
-					jsonParser = JSON_FACTORY.createParser(oEmbedResponse);
-					mContentUrl = getValueForName(jsonParser, "url");
+				if("photo".equals(type)) {
+					mContentUrl = (String)oEmbedData.get("url");
 					mContentType = "image/*";
-				} catch(MissingValueForNameException e) { /* Ignore */ }
-				mUnderlyingContentType = "image/*";
-			}
-			else if("video".equals(oEmbedType)) {
-				mUnderlyingContentType = "video/*";
-			}
+					mUnderlyingContentType = "image/*";
+				}
+				else if("video".equals(type)) {
+					mUnderlyingContentType = "video/*";
+				}
 
-			// Get thumbnail url and size.
-			try {
-				jsonParser = JSON_FACTORY.createParser(oEmbedResponse);
-				mThumbnailUrl = getValueForName(jsonParser, getOEmbedThumbnailUrlName());
-				jsonParser.close();
-
-				jsonParser = JSON_FACTORY.createParser(oEmbedResponse);
-				int thumbnailWidth = Integer.valueOf(getValueForName(jsonParser, getOEmbedThumbnailWidthName()));
-				jsonParser.close();
-				jsonParser = JSON_FACTORY.createParser(oEmbedResponse);
-				int thumbnailHeight = Integer.valueOf(getValueForName(jsonParser, getOEmbedThumbnailHeightName()));
-				jsonParser.close();
-				mThumbnailSmallestSide = Math.min(thumbnailWidth, thumbnailHeight);
-			} catch(MissingValueForNameException e) { /* Ignore. */ }
+				// Get thumbnail url and size.
+				mThumbnailUrl = (String)oEmbedData.get(getOEmbedThumbnailUrlName());
+				Integer thumbnailWidth = getAsInteger(oEmbedData, getOEmbedThumbnailWidthName());
+				Integer thumbnailHeight = getAsInteger(oEmbedData, getOEmbedThumbnailHeightName());
+				if(thumbnailWidth != null && thumbnailHeight != null)
+					mThumbnailSmallestSide = Math.min(thumbnailWidth, thumbnailHeight);
+			}
 		} catch(IOException e) {
 			/* Ignore. */
 		}
@@ -87,6 +71,15 @@ abstract class BaseOEmbedMediaEntity extends MediaEntity {
 			mContentType = "text/html";
 		if(mUnderlyingContentType == null)
 			mUnderlyingContentType = "text/html";
+	}
+
+	private Integer getAsInteger(JSONObject object, String name) {
+		Object value = object.get(name);
+		if(value instanceof Integer)
+			return (Integer)value;
+		else if(value instanceof String)
+			return Integer.valueOf((String)value);
+		return null;
 	}
 
 	/**
@@ -124,24 +117,6 @@ abstract class BaseOEmbedMediaEntity extends MediaEntity {
 	 */
 	protected String getOEmbedThumbnailHeightName() {
 		return "thumbnail_height";
-	}
-
-	protected String getValueForName(JsonParser jsonParser, String name) throws IOException {
-		if(jsonParser.nextToken() == JsonToken.START_OBJECT) {
-			while(jsonParser.nextToken() != JsonToken.END_OBJECT) {
-				String currentName = jsonParser.getCurrentName();
-				jsonParser.nextToken(); // Move to the value.
-				if(name.equals(currentName))
-					return jsonParser.getText();
-			}
-		}
-		throw new MissingValueForNameException(name);
-	}
-
-	protected static class MissingValueForNameException extends IOException {
-		public MissingValueForNameException(String name) {
-			super("No value for '" + name + '"');
-		}
 	}
 
 	/**

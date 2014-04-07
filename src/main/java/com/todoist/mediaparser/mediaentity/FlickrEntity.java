@@ -39,7 +39,7 @@ public class FlickrEntity extends BaseOEmbedMediaEntity {
 
 	@Override
 	protected String getOEmbedUrlTemplate() {
-		return "http://www.flickr.com/services/oembed?url=%s&format=json";
+		return "https://www.flickr.com/services/oembed?url=%s&format=json";
 	}
 
 	private Size[] getAvailableSizes() {

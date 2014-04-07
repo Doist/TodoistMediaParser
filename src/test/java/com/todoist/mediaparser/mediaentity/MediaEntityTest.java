@@ -1,13 +1,12 @@
 package com.todoist.mediaparser.mediaentity;
 
-import com.squareup.okhttp.OkHttpClient;
 import com.todoist.mediaparser.MediaParser;
+import com.todoist.mediaparser.util.HttpStack;
 
 import org.junit.Test;
 
 import java.io.IOException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import static org.hamcrest.CoreMatchers.containsString;
@@ -17,12 +16,12 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 public class MediaEntityTest {
-	private OkHttpClient mHttpClient = new OkHttpClient();
+	private HttpStack mHttpStack = MediaEntity.getDefaultHttpStack();
 
 	@Test
 	public void testImglyParsing() throws IOException {
 		MediaEntity mediaEntity = MediaParser.getInstance("http://img.ly/ylsL");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, ImglyEntity.class, 150);
 	}
 
@@ -31,18 +30,18 @@ public class MediaEntityTest {
 		MediaEntity mediaEntity;
 
 		mediaEntity = MediaParser.getInstance("http://instagram.com/p/eQKJG2AClg/");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, InstagramEntity.class, 100);
 
 		mediaEntity = MediaParser.getInstance("http://instagr.am/p/jxOBBDgCo5");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, InstagramEntity.class, 200);
 	}
 
 	@Test
 	public void testTwitpicParser() throws IOException {
 		MediaEntity mediaEntity = MediaParser.getInstance("http://twitpic.com/dylpf2");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, TwitpicEntity.class, 100);
 	}
 
@@ -51,15 +50,15 @@ public class MediaEntityTest {
 		MediaEntity mediaEntity;
 
 		mediaEntity = MediaParser.getInstance("http://www.flickr.com/photos/mwb-photos/13335437595/in/explore-2014-03-22");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, FlickrEntity.class, 1000);
 
 		mediaEntity = MediaParser.getInstance("http://flic.kr/p/hTVoH1");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, FlickrEntity.class, 400);
 
 		mediaEntity = MediaParser.getInstance("https://flic.kr/p/mmGuhg");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, FlickrEntity.class, 245);
 	}
 
@@ -68,15 +67,15 @@ public class MediaEntityTest {
 		MediaEntity mediaEntity;
 
 		mediaEntity = MediaParser.getInstance("http://twitter.yfrog.com/ocre1nbdj");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, YfrogEntity.class, 75);
 
 		mediaEntity = MediaParser.getInstance("http://yfrog.com/nvvdfdej");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, YfrogEntity.class, 200);
 
 		mediaEntity = MediaParser.getInstance("http://www.yfrog.com/0ia9mcz");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, YfrogEntity.class, 400);
 	}
 
@@ -85,15 +84,15 @@ public class MediaEntityTest {
 		MediaEntity mediaEntity;
 
 		mediaEntity = MediaParser.getInstance("http://www.deviantart.com/art/Growing-Bird-441918288");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, DeviantartEntity.class, 50);
 
 		mediaEntity = MediaParser.getInstance("http://fav.me/d4klbrc");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, DeviantartEntity.class, 300);
 
 		mediaEntity = MediaParser.getInstance("http://sta.sh/0xhhdd19ax3");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, DeviantartEntity.class, 600);
 	}
 
@@ -102,15 +101,15 @@ public class MediaEntityTest {
 		MediaEntity mediaEntity;
 
 		mediaEntity = MediaParser.getInstance("http://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Sego_lily_cm.jpg/225px-Sego_lily_cm.jpg");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, ImageFileEntity.class, 666);
 
 		mediaEntity = MediaParser.getInstance("http://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, ImageFileEntity.class, 666);
 
 		mediaEntity = MediaParser.getInstance("http://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, ImageFileEntity.class, 666);
 	}
 
@@ -119,11 +118,11 @@ public class MediaEntityTest {
 		MediaEntity mediaEntity;
 
 		mediaEntity = MediaParser.getInstance("https://www.youtube.com/watch?v=9bZkp7q19f0");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, YoutubeEntity.class, 666);
 
 		mediaEntity = MediaParser.getInstance("http://youtu.be/wcLNteez3c4");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, YoutubeEntity.class, 666);
 	}
 
@@ -132,15 +131,15 @@ public class MediaEntityTest {
 		MediaEntity mediaEntity;
 
 		mediaEntity = MediaParser.getInstance("http://vimeo.com/67410022");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, VimeoEntity.class, 90);
 
 		mediaEntity = MediaParser.getInstance("http://vimeo.com/album/2642665/video/74622970");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, VimeoEntity.class, 700);
 
 		mediaEntity = MediaParser.getInstance("http://vimeo.com/groups/shortfilms/videos/85347833");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, VimeoEntity.class, 1500);
 	}
 
@@ -149,32 +148,32 @@ public class MediaEntityTest {
 		MediaEntity mediaEntity;
 
 		mediaEntity = MediaParser.getInstance("http://www.hulu.com/watch/609104");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, HuluEntity.class, 666);
 
 		mediaEntity = MediaParser.getInstance("http://hulu.com/watch/20807/late-night-with-conan-obrien-wed-may-21-2008");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, HuluEntity.class, 666);
 	}
 
 	@Test
 	public void testJustinTvParser() throws IOException {
 		MediaEntity mediaEntity = MediaParser.getInstance("http://www.justin.tv/deepellumonair");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, JustinTvEntity.class, 666);
 	}
 
 	@Test
 	public void testScreenrParser() throws IOException {
 		MediaEntity mediaEntity = MediaParser.getInstance("http://www.screenr.com/NTHH");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, ScreenrEntity.class, 666);
 	}
 
 	@Test
 	public void testTedParser() throws IOException {
 		MediaEntity mediaEntity = MediaParser.getInstance("http://www.ted.com/talks/ken_robinson_says_schools_kill_creativity");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, TedEntity.class, 666);
 	}
 
@@ -186,7 +185,7 @@ public class MediaEntityTest {
 	@Test
 	public void testRdioParser() throws IOException {
 		MediaEntity mediaEntity = MediaParser.getInstance("http://www.rdio.com/artist/The_Black_Keys/album/Brothers/");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, RdioEntity.class, 666);
 	}
 
@@ -195,11 +194,11 @@ public class MediaEntityTest {
 		MediaEntity mediaEntity;
 
 		mediaEntity = MediaParser.getInstance("https://open.spotify.com/track/6zKRBLEnVQoBw76yR1BPDj");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, SpotifyEntity.class, 666);
 
 		mediaEntity = MediaParser.getInstance("https://play.spotify.com/artist/4WN5naL3ofxrVBgFpguzKo");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, SpotifyEntity.class, 666);
 	}
 
@@ -208,11 +207,11 @@ public class MediaEntityTest {
 		MediaEntity mediaEntity;
 
 		mediaEntity = MediaParser.getInstance("https://soundcloud.com/sizzlebird");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, SoundCloudEntity.class, 666);
 
 		mediaEntity = MediaParser.getInstance("http://soundcloud.com/djguesse/amtrac-came-along-guesse-remix");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, SoundCloudEntity.class, 666);
 	}
 
@@ -226,11 +225,11 @@ public class MediaEntityTest {
 		MediaEntity mediaEntity;
 
 		mediaEntity = MediaParser.getInstance("http://www.slideshare.net/goncalossilva/ruby-an-introduction");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, SlideShareEntity.class, 230);
 
 		mediaEntity = MediaParser.getInstance("http://www.slideshare.net/intelleto/leading-lean-managing-lean-ux-work-in-the-enterprise-mx-2014-conference-by-adaptive-path");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		checkThumbnailAndUrlContentType(mediaEntity, SlideShareEntity.class, 500);
 	}
 
@@ -239,7 +238,7 @@ public class MediaEntityTest {
 		MediaParser.registerMediaParser(MyServiceMediaEntity.class);
 
 		MediaEntity mediaEntity = MediaParser.getInstance("http://myservice.com");
-		mediaEntity.configure();
+		mediaEntity.configure(null);
 		assertThat(mediaEntity, is(instanceOf(MyServiceMediaEntity.class)));
 
 		MediaParser.unregisterMediaParser(MyServiceMediaEntity.class); // Cleanup.
@@ -260,13 +259,13 @@ public class MediaEntityTest {
 	                                             int thumbnailSize) throws IOException {
 		assertThat(mediaEntity, is(instanceOf(expectedClass)));
 
-		URLConnection thumbnailConnection = mHttpClient.open(new URL(mediaEntity.getThumbnailUrl(thumbnailSize)));
-		assertThat(thumbnailConnection.getHeaderField("Content-Type"), containsString("image/")); // Thumbnails are images.
+		Map<String, String> thumbnailUrlHeaders = mHttpStack.getHeaders(mediaEntity.getThumbnailUrl(thumbnailSize));
+		assertThat(thumbnailUrlHeaders.get("Content-Type"), containsString("image/")); // Thumbnails should be images.
 
 		String contentType = mediaEntity.getContentType();
-		contentType = contentType.replaceAll("/\\*$", "");
-		URLConnection imageConnection = mHttpClient.open(new URL(mediaEntity.getContentUrl()));
-		assertThat(imageConnection.getHeaderField("Content-Type"), containsString(contentType));
+		contentType = contentType.replaceAll("/\\*$", ""); // Remove asterisk to use containsString(String).
+		Map<String, String> contentHeaders = mHttpStack.getHeaders(mediaEntity.getContentUrl());
+		assertThat(contentHeaders.get("Content-Type"), containsString(contentType));
 	}
 
 	private static class MyServiceMediaEntity extends MediaEntity {
@@ -285,7 +284,7 @@ public class MediaEntityTest {
 		}
 
 		@Override
-		protected void doConfigure() throws Exception {
+		protected void doConfigure(HttpStack httpStack) throws Exception {
 			// Do nothing.
 		}
 

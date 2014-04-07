@@ -1,5 +1,7 @@
 package com.todoist.mediaparser.mediaentity;
 
+import com.todoist.mediaparser.util.HttpStack;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,7 +21,7 @@ abstract class BaseMediaEntityWithId extends MediaEntity {
     }
 
 	@Override
-	protected void doConfigure() throws Exception {
+	protected void doConfigure(HttpStack httpStack) throws Exception {
 		Matcher matcher = getIdPattern().matcher(mUrl);
 		if(matcher.lookingAt())
 			mId = matcher.group(1);

@@ -7,7 +7,6 @@ import com.todoist.mediaparser.mediaentity.HuluEntity;
 import com.todoist.mediaparser.mediaentity.ImageFileEntity;
 import com.todoist.mediaparser.mediaentity.ImglyEntity;
 import com.todoist.mediaparser.mediaentity.InstagramEntity;
-import com.todoist.mediaparser.mediaentity.JustinTvEntity;
 import com.todoist.mediaparser.mediaentity.MediaEntity;
 import com.todoist.mediaparser.mediaentity.RdioEntity;
 import com.todoist.mediaparser.mediaentity.ScreenrEntity;
@@ -35,7 +34,6 @@ public abstract class MediaParser {
                 add(YoutubeEntity.class);
                 add(VimeoEntity.class);
                 add(HuluEntity.class);
-                add(JustinTvEntity.class);
                 add(ScreenrEntity.class);
                 add(TedEntity.class);
                 add(VideoFileEntity.class);

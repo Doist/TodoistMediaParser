@@ -149,13 +149,6 @@ public class MediaEntityTest {
     }
 
     @Test
-    public void testJustinTvParser() throws IOException {
-        MediaEntity mediaEntity = MediaParser.getInstance("http://www.justin.tv/deepellumonair");
-        mediaEntity.configure(null);
-        checkThumbnailAndUrlContentType(mediaEntity, JustinTvEntity.class, 666);
-    }
-
-    @Test
     public void testScreenrParser() throws IOException {
         MediaEntity mediaEntity = MediaParser.getInstance("http://www.screenr.com/NTHH");
         mediaEntity.configure(null);

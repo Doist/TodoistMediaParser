@@ -65,23 +65,6 @@ public class MediaEntityTest {
     }
 
     @Test
-    public void testYfrogParser() throws IOException {
-        MediaEntity mediaEntity;
-
-        mediaEntity = MediaParser.getInstance("http://twitter.yfrog.com/ocre1nbdj");
-        mediaEntity.configure(null);
-        checkThumbnailAndUrlContentType(mediaEntity, YfrogEntity.class, 75);
-
-        mediaEntity = MediaParser.getInstance("http://yfrog.com/nvvdfdej");
-        mediaEntity.configure(null);
-        checkThumbnailAndUrlContentType(mediaEntity, YfrogEntity.class, 200);
-
-        mediaEntity = MediaParser.getInstance("http://www.yfrog.com/0ia9mcz");
-        mediaEntity.configure(null);
-        checkThumbnailAndUrlContentType(mediaEntity, YfrogEntity.class, 400);
-    }
-
-    @Test
     public void testDeviantartParser() throws IOException {
         MediaEntity mediaEntity;
 

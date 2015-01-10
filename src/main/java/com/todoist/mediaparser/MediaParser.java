@@ -18,7 +18,6 @@ import com.todoist.mediaparser.mediaentity.TedEntity;
 import com.todoist.mediaparser.mediaentity.TwitpicEntity;
 import com.todoist.mediaparser.mediaentity.VideoFileEntity;
 import com.todoist.mediaparser.mediaentity.VimeoEntity;
-import com.todoist.mediaparser.mediaentity.YfrogEntity;
 import com.todoist.mediaparser.mediaentity.YoutubeEntity;
 
 import java.lang.reflect.Constructor;
@@ -31,7 +30,6 @@ public abstract class MediaParser {
                 add(InstagramEntity.class);
                 add(TwitpicEntity.class);
                 add(FlickrEntity.class);
-                add(YfrogEntity.class);
                 add(DeviantartEntity.class);
                 add(ImageFileEntity.class);
                 add(YoutubeEntity.class);

@@ -11,14 +11,16 @@ public class HttpUtils {
             in = connection.getInputStream();
             StringBuilder builder = new StringBuilder();
             byte[] buffer = new byte[2048];
-            for(int byteCount; (byteCount = in.read(buffer)) != -1;)
+            for (int byteCount; (byteCount = in.read(buffer)) != -1; ) {
                 builder.append(new String(buffer, 0, byteCount, "UTF-8"));
+            }
             return builder.toString();
         } finally {
             try {
-                if(in != null)
+                if (in != null) {
                     in.close();
-            } catch(IOException e) { /* Ignore. */ }
+                }
+            } catch (IOException e) { /* Ignore. */ }
         }
     }
 }

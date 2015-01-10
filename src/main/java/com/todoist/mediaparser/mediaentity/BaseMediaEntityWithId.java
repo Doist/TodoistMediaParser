@@ -20,19 +20,20 @@ abstract class BaseMediaEntityWithId extends MediaEntity {
         return getIdPattern().matcher(mUrl).lookingAt();
     }
 
-	@Override
-	protected void doConfigure(HttpStack httpStack) throws Exception {
-		Matcher matcher = getIdPattern().matcher(mUrl);
-		if(matcher.lookingAt())
-			mId = matcher.group(1);
-	}
+    @Override
+    protected void doConfigure(HttpStack httpStack) throws Exception {
+        Matcher matcher = getIdPattern().matcher(mUrl);
+        if (matcher.lookingAt()) {
+            mId = matcher.group(1);
+        }
+    }
 
-	@Override
-	protected Pattern getMatchingPattern() {
-		return null; // matches() is overridden.
-	}
+    @Override
+    protected Pattern getMatchingPattern() {
+        return null; // matches() is overridden.
+    }
 
-	/**
+    /**
      * Returns a {@link Pattern} that captures the id from {@link #mUrl} in the first group. If possible, this should
      * be cached in a static variable.
      */

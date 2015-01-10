@@ -3,8 +3,7 @@ package com.todoist.mediaparser.mediaentity;
 import com.todoist.mediaparser.util.HttpStack;
 import com.todoist.mediaparser.util.SimpleHttpStack;
 
-import net.minidev.json.JSONObject;
-import net.minidev.json.JSONValue;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -42,13 +41,13 @@ abstract class BaseOEmbedMediaEntity extends MediaEntity {
             // Get oEmbed data.
             String oEmbedResponse = httpStack.getResponse(String.format(getOEmbedUrlTemplate(), mUrl));
             if (oEmbedResponse != null) {
-                JSONObject oEmbedData = (JSONObject) JSONValue.parse(oEmbedResponse);
+                JSONObject oEmbedData = new JSONObject(oEmbedResponse);
 
                 // Gather available info, depending on the type.
-                String type = (String) oEmbedData.get("type");
+                String type = oEmbedData.optString("type");
 
                 if ("photo".equals(type)) {
-                    mContentUrl = (String) oEmbedData.get("url");
+                    mContentUrl = oEmbedData.optString("url");
                     mContentType = "image/*";
                     mUnderlyingContentType = "image/*";
                 } else if ("video".equals(type)) {
@@ -56,11 +55,13 @@ abstract class BaseOEmbedMediaEntity extends MediaEntity {
                 }
 
                 // Get thumbnail url and size.
-                mThumbnailUrl = (String) oEmbedData.get(getOEmbedThumbnailUrlName());
-                Integer thumbnailWidth = getAsInteger(oEmbedData, getOEmbedThumbnailWidthName());
-                Integer thumbnailHeight = getAsInteger(oEmbedData, getOEmbedThumbnailHeightName());
-                if (thumbnailWidth != null && thumbnailHeight != null) {
-                    mThumbnailSmallestSide = Math.min(thumbnailWidth, thumbnailHeight);
+                mThumbnailUrl = oEmbedData.optString(getOEmbedThumbnailUrlName());
+                if (mThumbnailUrl != null) {
+                    int thumbnailWidth = oEmbedData.optInt(getOEmbedThumbnailWidthName(), -1);
+                    int thumbnailHeight = oEmbedData.optInt(getOEmbedThumbnailHeightName(), -1);
+                    if (thumbnailWidth != -1 && thumbnailHeight != -1) {
+                        mThumbnailSmallestSide = Math.min(thumbnailWidth, thumbnailHeight);
+                    }
                 }
             }
         } catch (IOException e) {
@@ -77,16 +78,6 @@ abstract class BaseOEmbedMediaEntity extends MediaEntity {
         if (mUnderlyingContentType == null) {
             mUnderlyingContentType = "text/html";
         }
-    }
-
-    private Integer getAsInteger(JSONObject object, String name) {
-        Object value = object.get(name);
-        if (value instanceof Integer) {
-            return (Integer) value;
-        } else if (value instanceof String) {
-            return Integer.valueOf((String) value);
-        }
-        return null;
     }
 
     /**

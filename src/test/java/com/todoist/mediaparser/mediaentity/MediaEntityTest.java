@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -253,7 +254,11 @@ public class MediaEntityTest {
         String contentType = mediaEntity.getContentType();
         contentType = contentType.replaceAll("/\\*$", ""); // Remove asterisk to use containsString(String).
         Map<String, String> contentHeaders = mHttpStack.getHeaders(mediaEntity.getContentUrl());
-        assertThat(contentHeaders.get("Content-Type"), containsString(contentType));
+        if ("text/html".equals(contentType)) {
+            assertThat(contentHeaders.get("Content-Type"), anyOf(containsString(contentType), nullValue()));
+        } else {
+            assertThat(contentHeaders.get("Content-Type"), containsString(contentType));
+        }
     }
 
     private static class MyServiceMediaEntity extends MediaEntity {
